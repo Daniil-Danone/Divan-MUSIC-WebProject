@@ -73,7 +73,7 @@ body {
 }
 
 .header__logo {
-	flex: 0 0 130px;
+	flex: 0 0 100px;
 	z-index: 3;
 
 }
@@ -104,8 +104,41 @@ body {
 	color: #000000;
 	text-transform: uppercase;
 	font-size: 16px;
+	line-height: 40px;
 	text-decoration: none;
+}
 
+.header__link.link::after {
+	display: block;
+	content: "";
+	height: 2px;
+	margin-top: -10px;
+	width: 0;
+	background-color: #24c0eb;
+	transition: width 0.25s ease-in-out;
+}
+
+.header__link.link:hover:after,
+.header__link.link:focus:after {
+	width: 100%;
+}
+
+.authorization__link {
+	color: #ffffff;
+	background-color: #24c0eb;
+	padding: 7px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+}
+
+
+.miniature__avatar {
+	margin-left: 30px;
+	margin-right: -15px;
+	max-height: 40px;
+	z-index: 3;
+	display: block;
+	border-radius: 50%;
 }
 
 @media (max-width: 767px) {
@@ -178,6 +211,7 @@ body {
 		width: 100%;
 		height: 100%;
 		overflow: auto;
+		margin: 0 0 auto;
 		background-color: #ffe5d0;
 		padding: 70px 10px 0 20px;
 		transition: all 0.4s ease 0s;
@@ -238,7 +272,6 @@ main {
 	background-color: #f8f9fa;
 }
 
-
 .index-column-1 {
 	background-color: #d6f4ff;
 }
@@ -246,7 +279,6 @@ main {
 .activities-button {
 	margin-bottom: 5px;
 }
-
 
 .index-column-2 {
 	background-color: #bef2ff;

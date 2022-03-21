@@ -1,17 +1,17 @@
 import os
 from PIL import Image
-from datetime import datetime
 from flask_login import LoginManager
 from static.data import db_session
 from static.data.users import User
+from static.forms.login_form import LoginForm
 from static.forms.registration_form import RegistrationForm
 from flask import Flask, render_template, redirect, make_response, jsonify
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 app.config['SECRET_KEY'] = 'Divan_music'
 
@@ -30,8 +30,16 @@ def not_found():
 @app.route('/', methods=['POST', 'GET'])
 def index():
     db_session.global_init("static/databases/users.db")
+    try:
+        if current_user:
+            image = f'/img/avatars/{current_user.email}.png'
+        else:
+            image = None
+    except:
+        image = None
     return render_template('index.html',
-                           title='DIVAN MUSIC')
+                           title='DIVAN MUSIC',
+                           image=image)
 
 
 @app.route('/registration', methods=['POST', 'GET'])
@@ -56,10 +64,8 @@ def registration():
                     filename = f'{user.email}.png'
                     img.save(filename)
                     image = Image.open(filename)
-                    h, w = image.size
-                    scale = 300 / max(h, w)
-                    image.resize((int(h * scale), int(w * scale)),
-                                 Image.ANTIALIAS).save(f"static/img/avatars/{user.email}.png")
+                    out_img = crop_max_square(image)
+                    out_img.save(f"static/img/avatars/{user.email}.png")
                     os.remove(filename)
                 except Exception as ex:
                     print(ex)
@@ -70,6 +76,43 @@ def registration():
     return render_template('registration.html',
                            title='Регистрация нового пользователя',
                            form=reg_form)
+
+
+@app.route('/auth', methods=['POST', 'GET'])
+def auth():
+    log_form = LoginForm()
+    if log_form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == log_form.email.data).first()
+        if user and user.check_password(log_form.password.data):
+            login_user(user, remember=log_form.remember_me.data)
+            return redirect('/')
+        return render_template('auth.html',
+                               form=log_form)
+    return render_template('auth.html',
+                           form=log_form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+from PIL import Image
+
+
+def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
+    img_width, img_height = pil_img.size
+    return pil_img.crop(((img_width - crop_width) // 2,
+                         (img_height - crop_height) // 2,
+                         (img_width + crop_width) // 2,
+                         (img_height + crop_height) // 2))
+
+
+def crop_max_square(pil_img):
+    return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
 if __name__ == '__main__':

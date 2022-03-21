@@ -18,7 +18,7 @@
             <div class="container">
                 <div class="header__body">
                     <a class="header__logo" href="/">
-                        <img src="../static/img/divan_music.png" class="header__logo__image" alt="">
+                        <img src="../static/img/logo_v2.png" class="header__logo__image" alt="">
                     </a>
                     <div class="header__burger">
                         <span></span>
@@ -26,16 +26,31 @@
                     <nav class="header__menu">
                         <ul class="header__list">
                             <li>
-                                <a href="/" class="header__link">Главная</a>
+                                <a href="/" class="header__link link">Главная</a>
                             </li>
                             <li>
-                                <a href="/" class="header__link">Новости</a>
+                                <a href="/" class="header__link link">Новости</a>
                             </li>
+                            {% if current_user.is_authenticated %}
+                                <li>
+                                    {% if image %}
+                                        <img src="{{ url_for('static', filename=image) }}" class="miniature__avatar"
+                                                         alt="">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}"
+                                                         class="miniature__avatar" alt="">
+                                    {% endif %}
+                                </li>
+                                <li>
+                                    <a href="/logout" class="header__link link">
+                                        {{ current_user.username }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li><a href="/auth" class="header__link authorization__link">ВОЙТИ</a></li>
+                                <li><a href="/registration" class="header__link authorization__link">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
+                            {% endif %}
                         </ul>
-                        <form class="authorization">
-                            <a href="/"><button class="authorization__button" type="button">Войти</button></a>
-                            <a href="/registration"><button class="authorization__button" type="button">Зарегистрироваться</button></a>
-                        </form>
                     </nav>
                 </div>
             </div>
