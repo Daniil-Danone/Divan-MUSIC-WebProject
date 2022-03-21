@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+
+
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/registration.css">
+
+    <link rel="icon" href="../static/img/logotype.ico">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="container">
+                <div class="header__body">
+                    <a class="header__logo" href="/">
+                        <img src="../static/img/divan_music.png" class="header__logo__image" alt="">
+                    </a>
+                    <div class="header__burger">
+                        <span></span>
+                    </div>
+                    <nav class="header__menu">
+                        <ul class="header__list">
+                            <li>
+                                <a href="/" class="header__link">Главная</a>
+                            </li>
+                            <li>
+                                <a href="/" class="header__link">Новости</a>
+                            </li>
+                        </ul>
+                        <form class="authorization">
+                            <a href="/"><button class="authorization__button" type="button">Войти</button></a>
+                            <a href="/registration"><button class="authorization__button" type="button">Зарегистрироваться</button></a>
+                        </form>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Begin page content -->
+        <main role="main" class="main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer navbar-expand-lg navbar-light bg-light">
+            <form method="post" novalidate>
+                <ul>
+                    <li>
+                        <a aria-current="page" href="/">Home</a>
+                    </li>
+                </ul>
+            </form>
+        </footer>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="../static/js/script.js"></script>
+</body>
+
+</html>

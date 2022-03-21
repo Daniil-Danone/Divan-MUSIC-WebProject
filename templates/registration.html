@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div class="registration__form">
+                <div class="registration__card" style="max-width: 1180px;">
+                    <div class="col-2-3">
+                        <div class="registration__card__body">
+                            <h5 class="registration__card__body">Регистрация</h5>
+                            <hr class="registration__title__hr">
+                            <form method="post" novalidate enctype="multipart/form-data">
+                                {{ form.hidden_tag() }}
+                                <div>
+                                    {{ form.csrf_token }}
+                                </div>
+                                <div class="col-item-4">
+                                    <label><b>Никнейм</b><font color="red">*</font></label>
+                                    <p>{{ form.username(class="input-field") }}
+                                        {% for error in form.errors.username %}
+                                            <small class="form-text text-muted ">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                    </p>
+
+                                </div>
+                                <div class="col-item-4">
+                                    <label><b>Почта</b><font color="red">*</font></label>
+                                    {{ form.email(class="input-field") }}
+                                    {% for error in form.errors.email %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                    {% if email_exist %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ email_exist }}</font>
+                                        </small>
+                                    {% endif %}
+                                </div>
+                                <div class="col-item-4">
+                                    <label><b>Пароль</b><font color="red">*</font></label>
+                                    {{ form.password(class="input-field") }}
+                                    {% for error in form.errors.password %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-item-4">
+                                    <label><b>Выберите аватар</b><font color="red">*</font></label>
+                                    {{ form.avatar(class="input-field") }}
+                                    {% for error in form.errors.avatar %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-item-4">
+                                    <div class="form-check">
+                                        {{ form.accept(class="form-check-input") }}
+                                        <label class="form-check-label" for="accept">
+                                            Согласие на обработку персональных данных<font color="red">*</font>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Зарегистрироваться
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-1-3">
+                        <img src="../static/img/guitar_art.jpg" class="img-fluid rounded-start" alt="...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
