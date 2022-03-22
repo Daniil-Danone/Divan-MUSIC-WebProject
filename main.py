@@ -33,13 +33,15 @@ def index():
     try:
         if current_user:
             image = f'/img/avatars/{current_user.email}.png'
+            return render_template('index.html',
+                                   title='DIVAN music',
+                                   image=image)
         else:
-            image = None
+            return render_template('index.html',
+                               title='DIVAN music')
     except:
-        image = None
-    return render_template('index.html',
-                           title='DIVAN MUSIC',
-                           image=image)
+        return render_template('index.html',
+                               title='DIVAN music')
 
 
 @app.route('/registration', methods=['POST', 'GET'])
@@ -84,13 +86,21 @@ def auth():
     if log_form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == log_form.email.data).first()
-        if user and user.check_password(log_form.password.data):
-            login_user(user, remember=log_form.remember_me.data)
-            return redirect('/')
-        return render_template('auth.html',
-                               form=log_form)
+        if user:
+            if user.check_password(log_form.password.data):
+                login_user(user, remember=log_form.remember_me.data)
+                return redirect('/')
+            else:
+                return render_template('auth.html',
+                                       form=log_form,
+                                       error='Неверный пароль!')
+        else:
+            return render_template('auth.html',
+                                   form=log_form,
+                                   error='Аккаунта с таким логином не существует!')
     return render_template('auth.html',
-                           form=log_form)
+                           form=log_form,
+                           title='Авторизация - DIVAN music')
 
 
 @app.route('/logout')
@@ -100,7 +110,11 @@ def logout():
     return redirect("/")
 
 
-from PIL import Image
+@app.route('/profile')
+def profile():
+    return render_template('profile.html',
+                           user=current_user,
+                           image=f'/img/avatars/{current_user.email}.png')
 
 
 def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:

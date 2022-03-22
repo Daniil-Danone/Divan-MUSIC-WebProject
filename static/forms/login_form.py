@@ -15,6 +15,5 @@ class LoginForm(FlaskForm):
                              id='password',
                              name='password',
                              render_kw={"placeholder": "Введите пароль..."})
-    remember_me = BooleanField('Запомнить меня')
-
-    submit = SubmitField('Войти')
+    remember_me = BooleanField('Запомнить меня',
+                               id='custom__checkbox')

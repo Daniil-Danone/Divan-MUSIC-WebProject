@@ -3,4 +3,7 @@ $(document).ready(function () {
         $('.header__burger,.header__menu').toggleClass('active')
         $('body').toggleClass('lock')
     });
+    $('.custom__checkbox').click(function(event) {
+        $('.custom__checkbox').toggleClass('active')
+    });
 });
