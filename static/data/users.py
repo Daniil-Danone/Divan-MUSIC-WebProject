@@ -17,6 +17,8 @@ class User(SqlAlchemyBase, UserMixin):
     age = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hobby = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    posts = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    avatar_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     def set_password(self, password):

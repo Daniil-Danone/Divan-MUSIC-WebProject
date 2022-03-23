@@ -4,6 +4,8 @@ from PIL import Image
 from flask_login import LoginManager
 from static.data import db_session
 from static.data.users import User
+from static.data.posts import Post
+from static.forms.post_form import PostForm
 from static.forms.login_form import LoginForm
 from static.forms.registration_form import RegistrationForm
 from flask import Flask, render_template, redirect, make_response, jsonify
@@ -34,15 +36,15 @@ def index():
     try:
         if current_user:
             image = f'/img/avatars/{current_user.email}.png'
-            return render_template('index2.html',
+            return render_template('index.html',
                                    title=f'Главная - DIVAN music',
                                    image=image,
                                    user=current_user)
         else:
-            return render_template('index2.html',
+            return render_template('index.html',
                                    title='Главная - DIVAN music')
     except:
-        return render_template('index2.html',
+        return render_template('index.html',
                                title='Главная - DIVAN music')
 
 
@@ -69,6 +71,7 @@ def registration():
             user.sex = reg_form.sex.data
             user.hobby = reg_form.hobby.data
             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
+            user.posts = 0
             if reg_form.avatar.data != '':
                 try:
                     img = reg_form.avatar.data
@@ -78,11 +81,13 @@ def registration():
                     out_img = crop_max_square(image)
                     out_img.save(f"static/img/avatars/{user.email}.png")
                     os.remove(filename)
+                    user.avatar_path = f"/img/avatars/{user.email}.png"
                 except Exception as ex:
                     print(ex)
                     pass
             db_sess.add(user)
             db_sess.commit()
+            login_user(user)
             return redirect('/')
     return render_template('registration.html',
                            title='Регистрация нового пользователя',
@@ -125,6 +130,56 @@ def profile():
                            user=current_user,
                            title=f'{current_user.username} - DIVAN music',
                            image=f'/img/avatars/{current_user.email}.png')
+
+
+@login_required
+@app.route('/add_post', methods=['POST', 'GET'])
+def news():
+    post_form = PostForm()
+    post = Post()
+    if post_form.validate_on_submit():
+        db_sess = db_session.create_session()
+        post.title = post_form.title.data
+        post.description = post_form.description.data
+        post.theme = post_form.theme.data
+        post.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
+        post.is_privacy = post_form.is_privacy.data
+        if post_form.content.data != '':
+            try:
+                img = post_form.content.data
+                img.save(f"static/img/post_img/{current_user.username}_{current_user.posts}.png")
+                post.path = f'/img/post_img/{current_user.username}_{current_user.posts}.png'
+                current_user.posts = current_user.posts + 1
+                post.creator_avatar_path = current_user.avatar_path
+            except Exception as ex:
+                print(ex)
+                pass
+        post.creator = current_user.username
+        db_sess.add(post)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+
+    return render_template('add_post.html',
+                           user=current_user,
+                           title=f'Создание записи - DIVAN music',
+                           image=f'/img/avatars/{current_user.email}.png',
+                           form=post_form)
+
+
+@app.route('/posts')
+def posts():
+    db_sess = db_session.create_session()
+    posts = db_sess.query(Post).all()
+    posts.reverse()
+
+    nav_path = [['/', 'Главная'], ['/posts', 'Новости']]
+    return render_template('posts.html',
+                           user=current_user,
+                           title=f'Создание записи - DIVAN music',
+                           image=f'/img/avatars/{current_user.email}.png',
+                           posts=posts,
+                           nav_path=nav_path)
 
 
 def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:

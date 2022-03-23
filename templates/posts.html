@@ -4,7 +4,9 @@
     <div class="content">
         <div class="container">
         <div class="navigation__str">
-            Контент
+            {% for link in nav_path %}
+                <a href="{{ link[0] }}" class="navigation__href">{{ link[1] }}</a>
+            {% endfor %}
         </div>
             <div class="grid">
                 <div class="grid__body">
@@ -36,21 +38,40 @@
                         </div>
                         <div class="grid__item grid__item_1_3">
                             {% if current_user.is_authenticated %}
-                                <a href="/logout" class="logout__link">ВЫЙТИ ИЗ АККАУНТА</a>
+                                <a href="/add_post" class="add__post__link">СОЗДАТЬ ЗАПИСЬ</a>
                             {% endif %}
                         </div>
                     </div>
 <!--------------------------------------------------------------------------------------------------------------------->
                     <div class="grid__column grid__content">
                         <div class="grid__item grid__item_2_1">
-                            <div class="post__card">
-                                <div class="post__title">
-                                    Настройки
+                            {% for post in posts %}
+                                <div class="post__card">
+                                    <div class="post__creator">
+                                        <div class="creator__avatar">
+                                            <img src="{{ url_for('static', filename=post.creator_avatar_path )}}" alt="oops">
+                                        </div>
+                                        <div class="creator__username">
+                                            {{ post.creator }}
+                                        </div>
+                                    </div>
+                                    <div class="post__header">
+                                        <div class="post__title"><b>{{ post.title }}</b></div>
+                                        <div class="post__theme"><small>{{ post.theme }}</small></div>
+                                    </div>
+                                    <div class="post__description">
+                                        {{ post.description }}
+                                    </div>
+                                    {% if post.path %}
+                                        <div class="post__content">
+                                            <img src="{{ url_for('static', filename=post.path) }}" alt="oops">
+                                        </div>
+                                    {% endif %}
+                                    <div class="post__created__date">
+                                        {{ post.created_date }}
+                                    </div>
                                 </div>
-                                <div class="post__content">
-                                    Скоро будут!
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="grid__item grid__item_2_2">Контент 2</div>
                     </div>
