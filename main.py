@@ -1,3 +1,4 @@
+import datetime
 import os
 from PIL import Image
 from flask_login import LoginManager
@@ -33,15 +34,16 @@ def index():
     try:
         if current_user:
             image = f'/img/avatars/{current_user.email}.png'
-            return render_template('index.html',
-                                   title='DIVAN music',
-                                   image=image)
+            return render_template('index2.html',
+                                   title=f'Главная - DIVAN music',
+                                   image=image,
+                                   user=current_user)
         else:
-            return render_template('index.html',
-                               title='DIVAN music')
+            return render_template('index2.html',
+                                   title='Главная - DIVAN music')
     except:
-        return render_template('index.html',
-                               title='DIVAN music')
+        return render_template('index2.html',
+                               title='Главная - DIVAN music')
 
 
 @app.route('/registration', methods=['POST', 'GET'])
@@ -55,11 +57,18 @@ def registration():
                                    title='Регистрация нового пользователя',
                                    email_exist='Пользователь с данной почтой уже существует!',
                                    form=reg_form)
+
         else:
             user.username = reg_form.username.data
             user.email = reg_form.email.data
             user.hashed_password = reg_form.password.data
             user.set_password(reg_form.password.data)
+            user.name = reg_form.name.data
+            user.surname = reg_form.surname.data
+            user.age = int(reg_form.age.data)
+            user.sex = reg_form.sex.data
+            user.hobby = reg_form.hobby.data
+            user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
             if reg_form.avatar.data != '':
                 try:
                     img = reg_form.avatar.data
@@ -114,6 +123,7 @@ def logout():
 def profile():
     return render_template('profile.html',
                            user=current_user,
+                           title=f'{current_user.username} - DIVAN music',
                            image=f'/img/avatars/{current_user.email}.png')
 
 

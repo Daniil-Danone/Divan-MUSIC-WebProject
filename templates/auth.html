@@ -3,53 +3,69 @@
 {% block content %}
     <div class="content">
         <div class="container">
-            <div class="auth__form" style="max-width: 1180px;">
-                <div class="card">
-                    <div class="form__card__body">
-                        <div class="card__title">Вход</div>
-                        <form method="post" novalidate enctype="multipart/form-data">
-                            {{ form.hidden_tag() }}
-                            <div>
-                                {{ form.csrf_token }}
-                            </div>
+            <div class="grid">
+                <div class="grid__body">
+                    <div class="grid__column">
+                        <div class="grid__item">
+                        Пусто
+                        </div>
+                    </div>
+                    <div class="grid__column grid__card">
+                        <div class="grid__item">
+                            <div class="card">
+                                <div class="form__card__body">
+                                    <div class="card__title">Вход</div>
+                                    <form method="post" novalidate enctype="multipart/form-data">
+                                        {{ form.hidden_tag() }}
+                                        <div>
+                                            {{ form.csrf_token }}
+                                        </div>
 
-                            <div class="col-item-4">
-                                <label>Логин<font color="red">*</font></label>
-                                <p>{{ form.email(class="custom__input__field") }}
-                                    {% for error in form.errors.email %}
-                                        <small class="form-text text-muted ">
-                                            <font color="red">{{ ''.join(error) }}</font>
-                                        </small>
-                                    {% endfor %}
-                                </p>
-                            </div>
+                                        <div class="col-item-4">
+                                            <label>Логин<font color="red">*</font></label>
+                                            <p>{{ form.email(class="custom__input__field") }}
+                                                {% for error in form.errors.email %}
+                                                    <small class="form-text text-muted ">
+                                                        <font color="red">{{ ''.join(error) }}</font>
+                                                    </small>
+                                                {% endfor %}
+                                            </p>
+                                        </div>
 
-                            <div class="col-item-4">
-                                <label>Пароль<font color="red">*</font></label>
-                                {{ form.password(class="custom__input__field") }}
-                                {% for error in form.errors.password %}
-                                    <small class="form-text text-muted ">
-                                        <font color="red">{{ ''.join(error) }}</font>
-                                    </small>
-                                {% endfor %}
-                            </div>
+                                        <div class="col-item-4">
+                                            <label>Пароль<font color="red">*</font></label>
+                                            {{ form.password(class="custom__input__field") }}
+                                            {% for error in form.errors.password %}
+                                                <small class="form-text text-muted ">
+                                                    <font color="red">{{ ''.join(error) }}</font>
+                                                </small>
+                                            {% endfor %}
+                                        </div>
 
-                            <div class="col-item-4">
-                                <div class="custom__checkbox">
-                                    {{ form.remember_me(class="custom__checkbox") }}
-                                    <label class="custom__checkbox__label" for="custom__checkbox">Запомнить меня
-                                    </label>
+                                        <div class="col-item-4">
+                                            <div class="custom__checkbox">
+                                                {{ form.remember_me(class="custom__checkbox") }}
+                                                <label class="custom__checkbox__label" for="custom__checkbox">Запомнить меня
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-item-4">
+                                            <div class="error">
+                                                {{ error }}
+                                            </div>
+                                        </div>
+                                        <div class="col-item-4">
+                                            <button type="submit" class="form__submit">ВОЙТИ</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="col-item-4">
-                                <div class="error">
-                                    {{ error }}
-                                </div>
-                            </div>
-                            <div class="col-item-4">
-                                <button type="submit" class="form__submit">ВОЙТИ</button>
-                            </div>
-                        </form>
+                        </div>
+                    </div>
+                    <div class="grid__column">
+                        <div class="grid__item">
+                            Пусто
+                        </div>
                     </div>
                 </div>
             </div>

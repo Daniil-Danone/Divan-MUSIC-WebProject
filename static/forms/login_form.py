@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, EmailField, BooleanField, SubmitField
+from wtforms import PasswordField, EmailField, BooleanField, StringField, RadioField
 from wtforms.validators import DataRequired, Length
 
 
@@ -15,5 +15,6 @@ class LoginForm(FlaskForm):
                              id='password',
                              name='password',
                              render_kw={"placeholder": "Введите пароль..."})
+
     remember_me = BooleanField('Запомнить меня',
                                id='custom__checkbox')
