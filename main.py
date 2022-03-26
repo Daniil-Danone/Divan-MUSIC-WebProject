@@ -173,11 +173,16 @@ def posts():
     posts = db_sess.query(Post).all()
     posts.reverse()
 
+    if current_user.is_authenticated:
+        image = current_user.email
+    else:
+        image = None
+
     nav_path = [['/', 'Главная'], ['/posts', 'Новости']]
     return render_template('posts.html',
                            user=current_user,
                            title=f'Создание записи - DIVAN music',
-                           image=f'/img/avatars/{current_user.email}.png',
+                           image=f'/img/avatars/{image}.png',
                            posts=posts,
                            nav_path=nav_path)
 

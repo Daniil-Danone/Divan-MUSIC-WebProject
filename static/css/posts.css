@@ -8,11 +8,11 @@
 	margin: 0 0 20px 0;
 	display: grid;
 	max-width: 1180px;
-	grid-template-rows: [start] fit-content(60px) [row2] 340px [row3] 160px [row4] 1fr [row-end];
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] 1fr [row-end];
 	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
 	grid-gap: 10px;
 	grid-template-areas:
-			"tools tools tools"
+			"avatar tools border1"
 			"avatar content border1"
 			"navigation content right__nothing"
 			"left__nothing content right__nothing";
@@ -28,9 +28,12 @@
 .posts__page__avatar {grid-area: avatar; background-color: #303030; border-radius: 10px;}
 .posts__page__navigation__buttons {grid-area: navigation; background-color: #303030; border-radius: 10px;}
 .posts__page__content {grid-area: content;}
-.posts__page__border1 {grid-area: border1;}
-.right__nothing {grid-area: right__nothing;}
-.left__nothing {grid-area: left__nothing;}
+.posts__page__border1 {grid-area: border1; background-color: #303030; border-radius: 10px;}
+.right__nothing {grid-area: right__nothing; background-color: #303030; border-radius: 10px;}
+.left__nothing {grid-area: left__nothing; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
 
 /*Строение TOOL-BAR*/
 
@@ -45,7 +48,6 @@
 	padding: 4px;
 	color: white;
 	font-size: 16px;
-	line-height: 30px;
 	border: 1px solid #5680E9   ;
 	border-radius: 5px;
 	background-color: transparent;
@@ -58,30 +60,40 @@
 
 .posts__sort__dropdown {
 	display: inline-block;
-	line-height: 40px;
+	line-height: 26px;
 	font-size: 16px;
 	text-align: center;
 }
 
+/**/
+/**/
 
 /*Строение навигационных кнопок*/
+
 .posts__page__navigation__grid {
 	display: grid;
-	grid-template-rows: [start] 1fr [row2] 1fr [row3] 1fr [row-end];
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row-end];
     grid-template-columns: [col-start] 100% [col-end];
     gap: 10px;
 }
 
+/**/
+/**/
 
 /*Строение профиля*/
+
 .posts__page__profile__grid {
 	display: grid;
-	grid-template-rows: [start] 260px [row2] 1fr [row3] 1fr [row-end];
+	grid-template-rows: [start] auto [row2] auto [row-end];
 	grid-template-columns: [col-start] 1fr [col-end];
 	gap: 10px;
 }
 
+/**/
+/**/
+
 /*Строение поста*/
+
 .post__card {
 	border-radius: 10px;
 	background-color: #303030;
@@ -117,6 +129,8 @@
 
 .post__content img {
 	width: 100%;
+	border: 3px solid #404040;
+	border-radius: 10px;
 }
 
 .post__creator {
@@ -132,19 +146,23 @@
 	margin: 10px 0 0 0;
 }
 
-@media (max-width: 1200px){
+
+/**/
+/**/
+
+/*Адаптив*/
+
+@media (max-width: 900px){
 	.posts__grid__body {
-		grid-template-rows: [start] fit-content(60px) [row2] 170px [row3] 170px [row4] 160px [row5] 1fr [row-end];
-		grid-template-columns: [start] 1fr [col2] 1fr [col-end];
+		grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] 1fr [row-end];
+		grid-template-columns: [start] 1fr [col2] 1fr [col2] 1fr [col-end];
 		grid-gap: 10px;
 		grid-template-areas:
-				"tools tools"
-				"avatar navigation"
-				"avatar navigation"
-				"content content"
-				"content content"
-				"left__nothing right__nothing"
-				"border1 border1";
+				"avatar navigation border1"
+				"avatar tools border1"
+				"content content content"
+				"content content content"
+				"left__nothing right__nothing right__nothing";
 	}
 
 	.right__nothing {

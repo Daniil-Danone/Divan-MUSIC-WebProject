@@ -1,3 +1,5 @@
+/*Сетка GRID*/
+
 .index__grid {
     display: block;
 }
@@ -5,17 +7,16 @@
 .index__grid__body {
     margin: 0 0 20px 0;
     display: grid;
-    grid-template-rows: [start] 400px [row2] 1fr [row-end];
+    grid-template-rows: [start] auto [row2] auto [row3] 1fr [row-end];
 	grid-template-columns: [col-start] 1fr [col2] 2fr [col3] 1fr [col-end];
     gap: 10px;
     grid-template-areas:
             "avatar content border1"
-            "navigation content border2"
-            "navigation content border2";
+            "navigation content border1"
+            "border2 content border1";
 }
 
 .index__grid__item {
-    border: 1px dashed #6F2232;
     padding: 10px;
     align-items: center;
     justify-content: center;
@@ -28,17 +29,11 @@
     gap: 10px;
 }
 
-.navigation__link {
-    display: block;
-
-}
-
-.index__page__avatar {grid-area: avatar;}
-.index__page__user__info {grid-area: info;}
-.index__page__navigation__buttons {grid-area: navigation;}
-.index__page__content {grid-area: content;}
-.index__page__border1 {grid-area: border1;}
-.index__page__border2 {grid-area: border2;}
+.index__page__avatar {grid-area: avatar; background-color: #303030; border-radius: 10px;}
+.index__page__navigation__buttons {grid-area: navigation; background-color: #303030; border-radius: 10px;}
+.index__page__content {grid-area: content; background-color: #303030; border-radius: 10px;}
+.index__page__border1 {grid-area: border1; background-color: #303030; border-radius: 10px;}
+.index__page__border2 {grid-area: border2; background-color: #303030; border-radius: 10px;}
 
 
 .text__subtitle {

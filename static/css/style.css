@@ -7,6 +7,7 @@
 	border: 0;
 	box-sizing: border-box;
 }
+
 a {
 	text-decoration: none;
 	cursor: pointer;
@@ -228,7 +229,7 @@ body {
 		height: 100%;
 		overflow: auto;
 		margin: 0 0 auto;
-		background-color: #ffe5d0;
+		background-color: #303030;
 		padding: 70px 10px 0 20px;
 		transition: all 0.4s ease 0s;
 	}
@@ -312,6 +313,7 @@ main {
 }
 
 .custom__input__field {
+	outline: none;
 	color: white;
 	width: 100%;
 	height: 40px;
@@ -319,13 +321,16 @@ main {
 	margin-top: 5px;
 	text-indent: 5px;
 	font-size: 16px;
-	border-radius: 8px;
-	background-color: transparent;
-	border: 1px solid #6F2232;
+	border-radius: 10px;
+	background-color: #404040;
 }
 
-.custom__input__field::placeholder {
-	color: #4E4E50;
+
+.custom__input__field:placeholder-shown {
+	text-indent: 5px;
+	padding: 5px;
+	font-size: 14px;
+	font-family: "FiraSans-Regular", sans-serif;
 }
 
 
@@ -336,6 +341,7 @@ main {
 
 
 input[type=file]::file-selector-button {
+	outline: none;
 	border: none;
 	color: white;
 	background-color: rgba(111, 34, 50, 0.9);
@@ -515,11 +521,11 @@ input[type=file]::file-selector-button {
 	border-radius: 5px;
 	background-color: transparent;
 
-	transition: 0.4s ease-in-out;
+	transition: 0.5s ease-out;
 }
 
 .navigation__link:hover {
-	background-color: #404040;
+	background-color: #505050;
 }
 
 .logout__link:hover {
@@ -582,6 +588,30 @@ input[type=file]::file-selector-button {
 
 .registration-title-hr {
 	color: #6F2232;
+}
+
+.text__dull {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.inline__link {
+	display: inline-block;
+	color: #6F2232;
+	transition: 0.4s ease-out;
+}
+
+.inline__link::after {
+	display: block;
+	content: "";
+	height: 1px;
+	width: 0;
+	background-color: #6F2232;
+	transition: width 0.4s ease-out;
+}
+
+.inline__link:hover:after,
+.inline__link:focus:after {
+	width: 100%;
 }
 
 @font-face {

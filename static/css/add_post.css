@@ -1,0 +1,78 @@
+/*Сетка GRID*/
+
+.add__post__grid {
+	display: block;
+}
+
+.add__post__grid__body {
+    margin: 0 0 20px 0;
+	display: grid;
+	max-width: 1180px;
+	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"left__border title right__border"
+			"left__border content right__border";
+}
+
+.add__post__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.add__post__title__block {grid-area: title; background-color: #303030; border-radius: 10px;}
+.add__post__left__border {grid-area: left__border; background-color: #303030; border-radius: 10px;}
+.add__post__form__block {grid-area: content; background-color: #303030; border-radius: 10px;}
+.add__post__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
+
+/*Строение заголовка формы*/
+
+.add__post__form__title {
+	font-size: 25px;
+	text-align: center;
+}
+
+/**/
+/**/
+
+/*Строение формы*/
+
+.add__post__form__fields__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto [row-end];
+	grid-template-columns: [start] 1fr [col-end];
+	grid-gap: 10px;
+}
+
+.add__post__custom__text__area {
+	outline: none;
+	resize: none;
+	height: 345px;
+}
+
+.add__post__custom__text__area:placeholder-shown {
+	text-indent: 5px;
+	padding: 5px;
+	font-size: 14px;
+	font-family: "FiraSans-Regular", sans-serif;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar {
+  width: 10px;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #6F2232, #5680E9);
+}
