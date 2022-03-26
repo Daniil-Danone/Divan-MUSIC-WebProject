@@ -37,7 +37,7 @@
 
                                         <div class="col-item-4">
                                             <label>Описание<font color="red">*</font></label>
-                                            {{ form.description(class="custom__input__field") }}
+                                            {{ form.description(class="custom__input__field custom__text__area") }}
                                             {% for error in form.errors.description %}
                                                 <small class="">
                                                     <font color="red">{{ ''.join(error) }}</font>

@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/posts.css">
+    <link rel="stylesheet" href="../static/css/index.css">
     <link rel="stylesheet" href="../static/css/registration.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <link rel="icon" href="../static/img/logotype.ico">
     <title>{{ title }}</title>
@@ -16,7 +19,7 @@
             <div class="container">
                 <div class="header__body">
                     <a class="header__logo" href="/">
-                        <img src="../static/img/logo_v2.png" class="header__logo__image" alt="">
+                        <img src="../static/img/logo_v2.png" class="header__logo__image " alt="">
                     </a>
                     <div class="header__burger">
                         <span></span>
@@ -29,6 +32,9 @@
                             <li>
                                 <a href="/posts" class="header__link link">Новости</a>
                             </li>
+                            <li>
+                                <a href="/" class="header__link link">Маркетплейс</a>
+                            </li>
                             {% if current_user.is_authenticated %}
                                 <li>
                                     {% if image %}
@@ -40,7 +46,7 @@
                                     {% endif %}
                                 </li>
                                 <li>
-                                    <a href="/profile" class="header__link link">
+                                    <a href="/profile" class="header__link link header__username">
                                         {{ current_user.username }}
                                     </a>
                                 </li>
@@ -60,11 +66,11 @@
             {% block content %}{% endblock %}
         </main>
 
-        <footer class="footer navbar-expand-lg navbar-light bg-light">
+        <footer class="footer">
             <form method="post" novalidate>
                 <ul>
                     <li>
-                        <a aria-current="page" href="/">Home</a>
+                        <a class="footer__link" aria-current="page" href="/">Главная</a>
                     </li>
                 </ul>
             </form>
