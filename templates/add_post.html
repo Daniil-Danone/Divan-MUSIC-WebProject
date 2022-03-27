@@ -3,92 +3,82 @@
 {% block content %}
     <div class="content">
         <div class="container">
-        <div class="navigation__str">
-            Контент
-        </div>
-            <div class="grid">
-                <div class="grid__body">
-                    <div class="grid__column">
-                        <div class="grid__item">
-                        Пусто
+            <div class="navigation__str">
+                Контент
+            </div>
+            <form method="post" novalidate enctype="multipart/form-data">
+                <div class="add__post__grid">
+                    <div class="add__post__grid__body">
+                        <div class="add__post__grid__item add__post__title__block">
+                            <div>
+                                {{ form.hidden_tag() }}
+                                {{ form.csrf_token }}
+                            </div>
+                            <div class="add__post__form__title">
+                                Создание записи
+                            </div>
                         </div>
-                    </div>
-                    <div class="grid__column grid__card">
-                        <div class="grid__item">
-                            <div class="card">
-                                <div class="form__card__body">
-                                    <div class="card__title">Создание записи</div>
-                                    <form method="post" novalidate enctype="multipart/form-data">
-                                        {{ form.hidden_tag() }}
-                                        <div>
-                                            {{ form.csrf_token }}
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <label>Заголовок<font color="red">*</font></label>
-                                            <p>{{ form.title(class="custom__input__field") }}
-                                                {% for error in form.errors.title %}
-                                                    <small class="">
-                                                        <font color="red">{{ ''.join(error) }}</font>
-                                                    </small>
-                                                {% endfor %}
-                                            </p>
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <label>Описание<font color="red">*</font></label>
-                                            {{ form.description(class="custom__input__field custom__text__area") }}
-                                            {% for error in form.errors.description %}
-                                                <small class="">
-                                                    <font color="red">{{ ''.join(error) }}</font>
-                                                </small>
-                                            {% endfor %}
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <label>Тематика записи<font color="red">*</font></label>
-                                            {{ form.theme(class="custom__input__field") }}
-                                            {% for error in form.errors.theme %}
-                                                <small class="">
-                                                    <font color="red">{{ ''.join(error) }}</font>
-                                                </small>
-                                            {% endfor %}
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <label>Приложите контент</label>
-                                            {{ form.content(class="custom__input__field custom__file__button") }}
-                                            {% for error in form.errors.content %}
-                                                <small class="form-text text-muted ">
-                                                    <font color="red">{{ ''.join(error) }}</font>
-                                                </small>
-                                            {% endfor %}
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <div class="custom__checkbox">
-                                                {{ form.is_privacy(class="custom__checkbox") }}
-                                                <label class="custom__checkbox__label" for="is_privacy">
-                                                    Скрыть запись?
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-item-4">
-                                            <button type="submit" class="form__submit">СОЗДАТЬ</button>
-                                        </div>
-                                    </form>
+                        <div class="add__post__grid__item add__post__left__border">
+                            Ничего
+                        </div>
+                        <div class="add__post__grid__item add__post__form__block">
+                            <div class="add__post__form__fields__grid">
+                                <div class="add__post__form__fields__grid__item">
+                                    <label>Заголовок<font color="red">*</font></label>
+                                    <p>{{ form.title(class="custom__input__field") }}
+                                        {% for error in form.errors.title %}
+                                            <small class="">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="add__post__form__fields__grid__item">
+                                    <label>Описание</label>
+                                    {{ form.description(class="custom__input__field add__post__custom__text__area") }}
+                                    {% for error in form.errors.description %}
+                                        <small class="">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__post__form__fields__grid__item">
+                                    <label>Тематика записи<font color="red">*</font></label>
+                                    {{ form.theme(class="custom__input__field") }}
+                                    {% for error in form.errors.theme %}
+                                        <small class="">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__post__form__fields__grid__item">
+                                    <label>Приложите контент</label>
+                                    {{ form.content(class="custom__input__field custom__file__button") }}
+                                    {% for error in form.errors.content %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__post__form__fields__grid__item">
+                                    <div class="custom__checkbox">
+                                        {{ form.is_privacy(class="custom__checkbox") }}
+                                        <label class="custom__checkbox__label" for="is_privacy">
+                                            Скрыть запись?
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="add__post__form__fields__grid__item">
+                                    <button type="submit" class="form__submit">СОЗДАТЬ</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="grid__column">
-                        <div class="grid__item">
-                            Пусто
+                        <div class="add__post__grid__item add__post__right__border">
+                            Ничего
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}

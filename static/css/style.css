@@ -33,7 +33,7 @@ body {
 	height: 100%;
 	line-height: 1;
 	background-color: #282828;
-	font-family: "FiraSans-Regular", sans-serif;
+	font-family: "Montserrat-Regular", sans-serif;
 }
 
 .wrapper {
@@ -313,6 +313,8 @@ main {
 }
 
 .custom__input__field {
+	font-family: Montserrat-Regular, sans-serif;
+	padding: 0.375rem 0.5rem;
 	outline: none;
 	color: white;
 	width: 100%;
@@ -324,15 +326,6 @@ main {
 	border-radius: 10px;
 	background-color: #404040;
 }
-
-
-.custom__input__field:placeholder-shown {
-	text-indent: 5px;
-	padding: 5px;
-	font-size: 14px;
-	font-family: "FiraSans-Regular", sans-serif;
-}
-
 
 
 .custom__text__area {
@@ -615,8 +608,8 @@ input[type=file]::file-selector-button {
 }
 
 @font-face {
-	font-family: "FiraSans-Regular";
-	src: url("../fonts/FiraSans/FiraSans-Regular.ttf");
+	font-family: "Montserrat-Regular";
+	src: url("../fonts/Montserrat/Montserrat-Regular.ttf");
 	font-style: normal;
 	font-weight: normal;
 }

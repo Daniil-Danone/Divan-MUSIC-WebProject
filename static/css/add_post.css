@@ -56,10 +56,8 @@
 }
 
 .add__post__custom__text__area:placeholder-shown {
-	text-indent: 5px;
-	padding: 5px;
-	font-size: 14px;
-	font-family: "FiraSans-Regular", sans-serif;
+	font-size: 16px;
+	font-family: "Montserrat-Regular", sans-serif;
 }
 
 .add__post__custom__text__area::-webkit-scrollbar {
