@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width">
 
     <link rel="stylesheet" href="../static/css/auth.css">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/general_style.css">
     <link rel="stylesheet" href="../static/css/posts.css">
     <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="stylesheet" href="../static/css/profile.css">
     <link rel="stylesheet" href="../static/css/add_post.css">
     <link rel="stylesheet" href="../static/css/registration.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -29,32 +30,80 @@
                     <nav class="header__menu">
                         <ul class="header__list">
                             <li>
-                                <a href="/" class="header__link link">Главная</a>
+                                <a href="/" class="header__link link">
+                                    <div class="header__link__grid">
+                                        <div class="header__link__grid__item">
+                                            <img src="../static/img/icons/home.svg" alt="">
+                                        </div>
+                                        <div class="header__link__grid__item">
+                                            Главная
+                                        </div>
+                                    </div>
+                                </a>
                             </li>
                             <li>
-                                <a href="/posts" class="header__link link">Новости</a>
+                                <a href="/posts" class="header__link link">
+                                    <div class="header__link__grid">
+                                        <div class="header__link__grid__item">
+                                            <img src="../static/img/icons/posts.svg" alt="">
+                                        </div>
+                                        <div class="header__link__grid__item">
+                                            Новости
+                                        </div>
+                                    </div>
+                                </a>
                             </li>
                             <li>
-                                <a href="/" class="header__link link">Маркетплейс</a>
+                                <a href="/" class="header__link link">
+                                    <div class="header__link__grid">
+                                        <div class="header__link__grid__item">
+                                            <img src="../static/img/icons/marketplace.svg" alt="">
+                                        </div>
+                                        <div class="header__link__grid__item">
+                                            Маркетплейс
+                                        </div>
+                                    </div>
+                                </a>
                             </li>
                             {% if current_user.is_authenticated %}
                                 <li>
                                     {% if image %}
-                                        <img src="{{ url_for('static', filename=current_user.avatar_path) }}" class="miniature__avatar"
-                                                         alt="">
+                                        <a href="/profile" class="header__link header__username">
+                                            <div class="header__link__grid">
+                                                <div class="header__link__grid__item">
+                                                    <img src="{{ url_for('static', filename=current_user.avatar_path) }}" class="miniature__avatar"
+                                                                 alt="">
+                                                </div>
+                                                <div class="header__link__grid__item">
+                                                    {{ current_user.username }}
+                                                </div>
+                                            </div>
+                                        </a>
                                     {% else %}
-                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}"
+                                        <a href="/profile" class="header__link link header__username">
+                                            <div class="header__link__grid">
+                                                <div class="header__link__grid__item header__avatar">
+                                                    <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}"
                                                          class="miniature__avatar" alt="">
+                                                </div>
+                                                <div class="header__link__grid__item">
+                                                    {{ current_user.username }}
+                                                </div>
+                                            </div>
+                                        </a>
                                     {% endif %}
                                 </li>
-                                <li>
-                                    <a href="/profile" class="header__link link header__username">
-                                        {{ current_user.username }}
-                                    </a>
-                                </li>
                             {% else %}
-                                <li><a href="/auth" class="header__link authorization__link">ВОЙТИ</a></li>
-                                <li><a href="/registration" class="header__link authorization__link">ЗАРЕГИСТРИРОВАТЬСЯ</a></li>
+                                <li>
+                                    <div class="header__link__grid">
+                                        <div class="header__link__grid__item">
+                                            <a href="/auth" class="header__link authorization__link">ВОЙТИ</a>
+                                        </div>
+                                        <div class="header__link__grid__item">
+                                        <a href="/registration" class="header__link authorization__link">ЗАРЕГИСТРИРОВАТЬСЯ</a>
+                                        </div>
+                                    </div>
+                                </li>
                             {% endif %}
                         </ul>
                     </nav>

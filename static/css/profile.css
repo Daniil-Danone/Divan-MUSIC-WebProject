@@ -1,0 +1,53 @@
+/*Сетка GRID*/
+
+.profile__grid {
+    display: block;
+}
+
+.profile__grid__body {
+    margin: 0 0 20px 0;
+	display: grid;
+	max-width: 1180px;
+	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"avatar content right__border"
+			"avatar content right__border";
+}
+
+.profile__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile__grid__avatar {grid-area: avatar; background-color: #303030; border-radius: 10px;}
+.profile__grid__content {grid-area: content; background-color: #303030; border-radius: 10px;}
+.profile__grid__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
+
+/*Сетка настроек аккаунта*/
+
+.profile__settings__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [start] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"title"
+			"logout";
+}
+
+.profile__settings__title {
+	width: 100%;
+    font-size: 20px;
+    margin: auto;
+	grid-area: title;
+}
+
+.profile__logout {
+	grid-area: logout;
+}

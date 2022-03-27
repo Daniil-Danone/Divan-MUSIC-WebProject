@@ -1,4 +1,11 @@
+/*Импорт шрифтов*/
 @import url(https://fonts.googleapis.com/css?family=Roboto+Slab|PT+Sans+Caption&subset=latin,cyrillic);
+
+/**/
+/**/
+
+/*Обнуление стилей*/
+
 *,
 *::before,
 *::after {
@@ -27,6 +34,11 @@ img {
 	vertical-align: top;
 }
 
+/**/
+/**/
+
+/*Стили оболочек и всего HTML-файла*/
+
 html,
 body {
 	color: #ffffff;
@@ -53,6 +65,11 @@ body {
 	height: 100%;
 	padding: 70px 0 0 0;
 }
+
+/**/
+/**/
+
+/*Хэдэр*/
 
 .header {
 	position: fixed;
@@ -95,11 +112,9 @@ body {
 	display: none;
 }
 
-.header__menu {
-}
-
 .header__list {
 	display: flex;
+	height: 40px;
 	position: relative;
 	z-index: 2;
 }
@@ -109,11 +124,27 @@ body {
 	margin: 0 0 0 20px;
 }
 
+.header__link__grid {
+	display: grid;
+	grid-template-rows: [start] 40px [row-end];
+	grid-template-columns: [col-start] auto [col2] auto [col-end];
+	grid-template-areas: 'icon link__text';
+	gap: 5px;
+	justify-content: center;
+	align-items: center;
+}
+
+.header__link__grid img {
+	grid-area: icon;
+	max-height: 16px;
+}
+
 .header__link {
+	grid-area: link__text;
 	color: #ffffff;
 	text-transform: uppercase;
 	font-size: 16px;
-	line-height: 40px;
+	line-height: 20px;
 	text-decoration: none;
 }
 
@@ -132,6 +163,10 @@ body {
 	width: 100%;
 }
 
+
+/**/
+/**/
+
 .authorization__link {
 	color: #ffffff;
 	padding: 7px;
@@ -146,10 +181,7 @@ body {
 }
 
 .miniature__avatar {
-	display: inline-block;
-	margin-left: 30px;
-	margin-right: -15px;
-	max-height: 40px;
+	min-height: 40px;
 	z-index: 3;
 	border-radius: 50%;
 }
@@ -485,9 +517,9 @@ input[type=file]::file-selector-button {
 }
 
 .profile__info__item {
-	margin: 0 0 auto;
+	margin: 10px 0;
 	padding: 5px;
-	border-bottom: 1px solid #6F2232;
+	border-bottom: 2px solid #454545;
 }
 
 
@@ -513,17 +545,31 @@ input[type=file]::file-selector-button {
 	color: white;
 	width: 100%;
 	line-height: 30px;
+}
+
+.navigation__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] auto [col2] auto [col-end];
+	grid-column-gap: 10px;
 	padding: 5px;
+	grid-template-areas:
+			"icon text__href";
+	justify-content: left;
+    align-items: center;
+
 	font-size: 16px;
 	border-radius: 5px;
 	background-color: transparent;
 
-	transition: 0.5s ease-out;
+	transition: 0.3s ease-out;
+}
+.navigation__grid:hover {
+	background-color: #454545;
 }
 
-.navigation__link:hover {
-	background-color: #505050;
-}
+.navigation__grid img {grid-area: icon; max-height: 30px;}
+.navigation__grid.navigation__link {grid-area: text__href;}
 
 .logout__link:hover {
 	color: white;
