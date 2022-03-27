@@ -332,6 +332,10 @@ main {
 	max-width: 525px;
 }
 
+.custom__file__button {
+	padding: 0;
+}
+
 
 input[type=file]::file-selector-button {
 	outline: none;
@@ -605,6 +609,10 @@ input[type=file]::file-selector-button {
 .inline__link:hover:after,
 .inline__link:focus:after {
 	width: 100%;
+}
+
+.error {
+	color: #C3073F;
 }
 
 @font-face {

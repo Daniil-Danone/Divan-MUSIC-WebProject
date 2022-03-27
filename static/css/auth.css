@@ -1,0 +1,63 @@
+/*Сетка GRID*/
+
+.auth__grid {
+    display: block;
+}
+
+.auth__grid__body {
+    margin: 0 0 20px 0;
+	display: grid;
+	max-width: 1180px;
+	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"left__border form__title right__border"
+			"left__border form__content right__border";
+}
+
+.auth__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth__grid__title__block {grid-area: form__title; background-color: #303030; border-radius: 10px;}
+.auth__grid__form__block {grid-area: form__content; background-color: #303030; border-radius: 10px;}
+.auth__grid__left__border {grid-area: left__border; background-color: #303030; border-radius: 10px;}
+.auth__grid__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
+
+/*Строение заголовка формы*/
+.auth__grid__form__title {
+	font-size: 25px;
+	text-align: center;
+}
+
+
+/**/
+/**/
+
+/*Строение формы*/
+
+.auth__form__content__grid {
+    display: grid;
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row-end];
+	grid-template-columns: [start] 1fr [col-end];
+	grid-gap: 20px;
+    grid-template-areas:
+            'login'
+            'password'
+            'rememberme'
+            'error'
+            'button'
+;
+}
+
+.auth__grid__login__block {grid-area: login;}
+.auth__grid__password__block {grid-area: password;}
+.auth__grid__rememberme__block {grid-area: rememberme;}
+.auth__grid__error__block {grid-area: error;}
+.auth__grid__button__block {grid-area: button;}

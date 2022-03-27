@@ -84,7 +84,7 @@
 
 .posts__page__profile__grid {
 	display: grid;
-	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row-end];
 	grid-template-columns: [col-start] 1fr [col-end];
 	gap: 10px;
 }
