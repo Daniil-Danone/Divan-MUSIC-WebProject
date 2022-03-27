@@ -539,7 +539,7 @@ input[type=file]::file-selector-button {
 	transition: 0.4s ease-in-out;
 }
 
-.navigation__link {
+.navigation__link__text {
 	display: block;
 	text-align: center;
 	color: white;
@@ -548,21 +548,25 @@ input[type=file]::file-selector-button {
 }
 
 .navigation__grid {
+	
 	display: grid;
 	grid-template-rows: [start] auto [row-end];
 	grid-template-columns: [start] auto [col2] auto [col-end];
 	grid-column-gap: 10px;
-	padding: 5px;
 	grid-template-areas:
 			"icon text__href";
+
 	justify-content: left;
     align-items: center;
 
+	padding: 5px;
 	font-size: 16px;
 	border-radius: 5px;
 	background-color: transparent;
 
 	transition: 0.3s ease-out;
+
+	cursor: pointer;
 }
 .navigation__grid:hover {
 	background-color: #454545;

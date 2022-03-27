@@ -154,15 +154,15 @@
 
 @media (max-width: 900px){
 	.posts__grid__body {
-		grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] 1fr [row-end];
-		grid-template-columns: [start] 1fr [col2] 1fr [col2] 1fr [col-end];
+		grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row-end];
+		grid-template-columns: [start] 1fr [col2] 2fr [col-end];
 		grid-gap: 10px;
 		grid-template-areas:
-				"avatar navigation border1"
-				"avatar tools border1"
-				"content content content"
-				"content content content"
-				"left__nothing right__nothing right__nothing";
+				"tools content"
+				"avatar content"
+				"navigation content"
+				"left__nothing content "
+				"left__nothing right__nothing";
 	}
 
 	.right__nothing {
