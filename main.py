@@ -187,6 +187,19 @@ def posts():
                            nav_path=nav_path)
 
 
+@app.route('/marketplace')
+def marketplace():
+    if current_user.is_authenticated:
+        image = current_user.email
+    else:
+        image = None
+    return render_template('marketplace_main_page.html',
+                           user=current_user,
+                           title=f'Маркетплейс - DIVAN music',
+                           image=f'/img/avatars/{image}.png',
+                           posts=posts,)
+
+
 def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
     img_width, img_height = pil_img.size
     return pil_img.crop(((img_width - crop_width) // 2,

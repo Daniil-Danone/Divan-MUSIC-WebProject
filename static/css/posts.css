@@ -14,7 +14,7 @@
 	grid-template-areas:
 			"avatar tools border1"
 			"avatar content border1"
-			"navigation content right__nothing"
+			"navigation content border1"
 			"left__nothing content right__nothing";
 }
 
@@ -29,8 +29,8 @@
 .posts__page__navigation__buttons {grid-area: navigation; background-color: #303030; border-radius: 10px;}
 .posts__page__content {grid-area: content;}
 .posts__page__border1 {grid-area: border1; background-color: #303030; border-radius: 10px;}
-.right__nothing {grid-area: right__nothing; background-color: #303030; border-radius: 10px;}
-.left__nothing {grid-area: left__nothing; background-color: #303030; border-radius: 10px;}
+.right__nothing {grid-area: right__nothing; display: none; background-color: #303030; border-radius: 10px;}
+.left__nothing {grid-area: left__nothing; display: none; background-color: #303030; border-radius: 10px;}
 
 /**/
 /**/

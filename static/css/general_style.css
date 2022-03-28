@@ -154,7 +154,7 @@ body {
 	height: 2px;
 	margin-top: -10px;
 	width: 0;
-	background-color: #6F2232;
+	background-color: #5680e9;
 	transition: width 0.4s ease-out;
 }
 
@@ -170,14 +170,14 @@ body {
 .authorization__link {
 	color: #ffffff;
 	padding: 7px;
-	border: 1px solid #6F2232;
+	border: 1px solid #5680E9;
 	border-radius: 5px;
 	transition: 0.4s ease-in-out;
 }
 
 .authorization__link:hover {
 	color: #ffffff;
-	background-color: #6F2232;
+	background-color: #5680E9;
 }
 
 .miniature__avatar {
@@ -301,7 +301,7 @@ main {
 	height: 100%;
 	margin: 0 0 auto;
 	padding: 10px;
-	border: 1px solid #6F2232;
+	border: 1px solid #5680e9;
 	border-radius: 8px;
 }
 
@@ -373,8 +373,8 @@ input[type=file]::file-selector-button {
 	outline: none;
 	border: none;
 	color: white;
-	background-color: rgba(111, 34, 50, 0.9);
-	border-right: 1px solid #6F2232;
+	background-color: rgba(86, 128, 233, 0.9);
+	border-right: 1px solid #5680e9;
 	height: 100%;
 	margin-left: -5px;
 	cursor: pointer;
@@ -384,7 +384,7 @@ input[type=file]::file-selector-button {
 	width: 100%;
 	color: white;
 	padding: 7px;
-	border: 1px solid #6F2232;
+	border: 1px solid #5680E9;
 	border-radius: 5px;
 	background-color: transparent;
 	transition: 0.4s ease-in-out;
@@ -392,7 +392,7 @@ input[type=file]::file-selector-button {
 
 .form__submit:hover {
 	color: white;
-	background-color: #6F2232;
+	background-color: #5680E9;
 }
 
 .custom__checkbox {
@@ -414,7 +414,7 @@ input[type=file]::file-selector-button {
 	top: 5px;
 	cursor: pointer;
 
-	border: 1px solid #6F2232;
+	border: 1px solid #5680E9;
 	border-radius: 5px;
 	background-color: transparent;}
 
@@ -427,7 +427,7 @@ input[type=file]::file-selector-button {
 	height: 10px;
 	cursor: pointer;
 
-	background-color: #6F2232;
+	background-color: #5680E9;
 	border-radius: 3px;
 
 	transition: all 0.3s ease 0s;
@@ -468,7 +468,7 @@ input[type=file]::file-selector-button {
 	margin-right: 10px;
 	cursor: pointer;
 
-	border: 1px solid #6F2232;
+	border: 1px solid #5680E9;
 	border-radius: 50%;
 	background-color: transparent;
 }
@@ -485,7 +485,7 @@ input[type=file]::file-selector-button {
 	cursor: pointer;
 
 	border-radius: 50%;
-	background-color: #6F2232;
+	background-color: #5680E9;
 
 	transition: all 0.3s ease 0s;
 
@@ -588,7 +588,7 @@ input[type=file]::file-selector-button {
 	line-height: 30px;
 	padding: 4px;
 	font-size: 16px;
-	border: 1px solid #6F2232;
+	border: 1px solid #5680E9;
 	border-radius: 5px;
 
 	background-color: transparent;
@@ -598,7 +598,7 @@ input[type=file]::file-selector-button {
 
 .add__post__link:hover {
 	color: white;
-	background-color: #6F2232;
+	background-color: #5680E9;
 }
 
 .footer {
@@ -634,7 +634,7 @@ input[type=file]::file-selector-button {
 }
 
 .registration-title-hr {
-	color: #6F2232;
+	color: #5680E9;
 }
 
 .text__dull {
@@ -643,7 +643,7 @@ input[type=file]::file-selector-button {
 
 .inline__link {
 	display: inline-block;
-	color: #6F2232;
+	color: #5680E9;
 	transition: 0.4s ease-out;
 }
 
@@ -652,7 +652,7 @@ input[type=file]::file-selector-button {
 	content: "";
 	height: 1px;
 	width: 0;
-	background-color: #6F2232;
+	background-color: #5680E9;
 	transition: width 0.4s ease-out;
 }
 

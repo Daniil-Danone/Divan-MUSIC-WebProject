@@ -1,0 +1,59 @@
+/*Сетка GRID*/
+
+.marketplace__grid {
+	display: block;
+}
+
+.marketplace__grid__body {
+	margin: 0 0 20px 0;
+	display: grid;
+	max-width: 1180px;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 5fr [col2] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"content tools";
+}
+
+.marketplace__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.marketplace__page__content {grid-area: content; background-color: #303030; border-radius: 10px;}
+.marketplace__page__tools__block {grid-area: tools; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
+
+/*Разметка товарной сетки*/
+
+.marketplace__products__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 1fr [col-end];
+	grid-gap: 10px;
+}
+
+.marketplace__products__grid__item {
+	background-color: #404040;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+/*Разметка товара*/
+.marketplace__product__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 1fr [col3] 60px [col-end];
+	grid-gap: 5px;
+	grid-template-areas:
+			"title title price"
+			"seller description price";
+}
+
+.product__seller {grid-area: seller;}
+.product__title {grid-area: title;}
+.product__description {grid-area: description;}
+.product__price {grid-area: price; border-left: 2px solid #505050; padding: 5px;}
