@@ -12,17 +12,39 @@
                         <div class="marketplace__products__grid">
                             {% for product in products %}
                                 <div class="marketplace__products__grid__item">
-                                    <div class="marketplace__product__grid">
-                                        <div class="marketplace__product__item product__seller">
-                                            <div class="seller__avatar creator__avatar">
-                                                <img src="{{ url_for('static', filename=product.creator_avatar_path )}}" alt="">
+                                    <a href="/marketplace/product_id_{{ product.id }}">
+                                        <div class="marketplace__product__grid">
+                                            <div class="marketplace__product__item product__seller">
+                                                <div class="marketplace__product__item creator__avatar">
+                                                    <img src="{{ url_for('static', filename=product.creator_avatar_path )}}" alt="">
+                                                </div>
+                                                <div class="marketplace__product__item product__seller__nickname">
+                                                    {{ product.creator }}
+                                                </div>
                                             </div>
-                                            <div class="seller__nickname">{{ product.creator }}</div>
+                                            <div class="marketplace__product__item product__title">
+                                                <b>{{ product.title }}</b>
+                                            </div>
+                                            <div class="marketplace__product__item product__description">
+                                                {{ product.description }}
+                                            </div>
+                                            <div class="marketplace__product__item product__description">
+                                                {{ product.description }}
+                                            </div>
+                                            <div class="marketplace__product__item product__file">
+                                                <div class="product__file__icon">
+                                                    <img src="{{ url_for('static', filename=product.icon_file )}}" alt="">
+                                                </div>
+                                                <div class="product__filename">
+                                                    {{ product.content }}
+                                                </div>
+                                            </div>
+                                            <div class="marketplace__product__item product__price">
+                                                <p>Цена:</p>
+                                                {{ product.price }}$
+                                            </div>
                                         </div>
-                                        <div class="marketplace__product__item product__title">{{ product.title }}</div>
-                                        <div class="marketplace__product__item product__description">{{ product.description }}</div>
-                                        <div class="marketplace__product__item product__price">{{ product.price }}$</div>
-                                    </div>
+                                    </a>
                                 </div>
                             {% endfor %}
                         </div>

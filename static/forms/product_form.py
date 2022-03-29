@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, SelectField, StringField, BooleanField, IntegerField
+from wtforms import TextAreaField, SelectField, StringField, BooleanField, FloatField
 from wtforms.validators import DataRequired, Length, NumberRange
 from flask_wtf.file import FileField, FileAllowed
 
@@ -22,11 +22,11 @@ class ProductForm(FlaskForm):
                                  ('Услуги', 'Услуги')]
                         )
 
-    content = FileField('Вложения', validators=[FileAllowed(['pdf', 'gp', 'gpx', 'gp5', 'doc', 'txt'])])
+    content = FileField('Вложения', validators=[FileAllowed(['pdf', 'gp', 'gpx', 'gp5', 'doc', 'docx', 'txt'])])
 
-    price = IntegerField('Цена (от 1$ до 999$)', validators=[DataRequired(message='Это поле должно быть заполнено!'),
-                                             NumberRange(min=1, max=999)],
-                         name='price',
-                         id='price',
-                         render_kw={"placeholder": "Цена товара..."}
-                         )
+    price = FloatField('Цена (от 1$ до 999$)', validators=[DataRequired(message='Это поле должно быть заполнено!'),
+                                                           NumberRange(min=1, max=999)],
+                       name='price',
+                       id='price',
+                       render_kw={"placeholder": "Цена товара..."}
+                       )

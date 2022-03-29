@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     $('.custom__checkbox.accept__checkbox').click(function(event) {
         $('.custom__checkbox.accept__checkbox').toggleClass('active')
+        $(this).find('input').prop('checked', true);
     });
 
     $('.custom__checkbox.remember_me').click(function(event) {

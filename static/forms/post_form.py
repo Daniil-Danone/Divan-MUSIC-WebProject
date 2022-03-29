@@ -23,6 +23,6 @@ class PostForm(FlaskForm):
                                  ('Обсуждения', 'Обсуждения')]
                         )
 
-    content = FileField('Контент', validators=[FileAllowed(['png', 'jpg', 'jpeg'])])
+    content = FileField('Контент', validators=[FileAllowed(['png', 'jpg', 'jpeg', 'gif'])])
 
     is_privacy = BooleanField('Скрыть?', name='is_privacy', id='is_privacy')

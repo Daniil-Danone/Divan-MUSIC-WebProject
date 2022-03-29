@@ -22,17 +22,17 @@ class RegistrationForm(FlaskForm):
                              name='password',
                              render_kw={"placeholder": "Придумайте пароль..."})
 
-    name = StringField('Имя', validators=[DataRequired(message='Это поле должно быть заполнено!')],
+    name = StringField('Имя',
                        id='name',
                        name='name',
                        render_kw={"placeholder": "Введите имя..."})
 
-    surname = StringField('Фамилия', validators=[DataRequired(message='Это поле должно быть заполнено!')],
+    surname = StringField('Фамилия',
                           id='surname',
                           name='surname',
                           render_kw={"placeholder": "Введите фамилию..."})
 
-    age = StringField('Возраст', validators=[DataRequired(message='Это поле должно быть заполнено!')],
+    age = StringField('Возраст',
                       id='age',
                       name='age',
                       render_kw={"placeholder": "Введите возраст..."})
@@ -42,7 +42,7 @@ class RegistrationForm(FlaskForm):
                      id='sex',
                      name='sex')
 
-    hobby = StringField('Хобби, увлечения', validators=[DataRequired(message='Это поле должно быть заполнено!')],
+    hobby = StringField('Хобби, увлечения',
                         id='hobby',
                         name='hobby',
                         render_kw={"placeholder": "Перечислите свои увлечения, разделяя их запятой"})

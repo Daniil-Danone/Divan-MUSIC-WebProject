@@ -70,15 +70,71 @@
 /*Разметка товара*/
 .marketplace__product__grid {
 	display: grid;
-	grid-template-rows: [start] auto [row-end];
-	grid-template-columns: [start] 1fr [col2] 1fr [col3] 60px [col-end];
-	grid-gap: 5px;
+	grid-template-rows: [start] 20px [row2] 40px [row3] auto [row-end];
+	grid-template-columns: [start] 100px [col2] auto [col3] 60px [col-end];
+	grid-gap: 10px;
+	cursor: pointer;
 	grid-template-areas:
-			"title title price"
-			"seller description price";
+			"title title title"
+			"seller description price"
+			"seller file price";
 }
 
-.product__seller {grid-area: seller;}
-.product__title {grid-area: title;}
-.product__description {grid-area: description;}
-.product__price {grid-area: price; border-left: 2px solid #505050; padding: 5px;}
+.marketplace__product__item {
+	font-size: 13px;
+}
+
+.product__seller {
+	grid-area: seller;
+	display: flex;
+	row-gap: 10px;
+	flex-direction: column;
+	justify-content: left;
+	border-right: 2px solid #505050;
+}
+
+.product__file {
+	grid-area: file;
+	display: flex;
+	column-gap: 10px;
+	justify-content: left;
+	align-items: center;
+}
+
+.product__file__icon img {
+	height: 40px;
+}
+
+.product__title {
+	grid-area: title;
+	border-bottom: 2px solid #505050;
+}
+.product__description {
+	grid-area: description;
+	vertical-align: center;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	height: 40px;
+	padding-left: 5px;
+}
+.product__description:after {
+  content: "";
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, white 50%);
+}
+
+.product__price {
+	grid-area: price;
+	border-left: 2px solid #505050;
+	padding: 5px;
+}
+
+.product__price p {
+	margin-bottom: 10px;
+}

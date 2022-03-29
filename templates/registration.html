@@ -11,8 +11,8 @@
                     <div class="reg__grid__body">
                         <div class="reg__grid__item reg__grid__title__block">
                                 <div>
-                                    {{ reg_form.hidden_tag() }}
-                                    {{ reg_form.csrf_token }}
+                                    {{ form.hidden_tag() }}
+                                    {{ form.csrf_token }}
                                 </div>
                                 <div class="reg__grid__form__title">
                                     Регистрация пользователя
@@ -22,8 +22,8 @@
                             <div class="reg__form__content__grid">
                                 <div class="reg__grid__form__grid__item reg__grid__nickname__block">
                                     <label>Никнейм<font color="red">*</font></label>
-                                    <p>{{ reg_form.username(class="custom__input__field") }}
-                                        {% for error in reg_form.errors.username %}
+                                    <p>{{ form.username(class="custom__input__field") }}
+                                        {% for error in form.errors.username %}
                                             <small class="form-text text-muted ">
                                                 <font color="red">{{ ''.join(error) }}</font>
                                             </small>
@@ -32,8 +32,8 @@
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__email__block">
                                     <label>Почта<font color="red">*</font></label>
-                                    {{ reg_form.email(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.email %}
+                                    {{ form.email(class="custom__input__field") }}
+                                    {% for error in form.errors.email %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
@@ -46,26 +46,26 @@
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__password__block">
                                     <label>Пароль<font color="red">*</font></label>
-                                    {{ reg_form.password(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.password %}
+                                    {{ form.password(class="custom__input__field") }}
+                                    {% for error in form.errors.password %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
                                     {% endfor %}
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__name__block">
-                                    <label>Имя<font color="red">*</font></label>
-                                    {{ reg_form.name(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.name %}
+                                    <label>Имя</label>
+                                    {{ form.name(class="custom__input__field") }}
+                                    {% for error in form.errors.name %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
                                     {% endfor %}
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__surname__block">
-                                    <label>Фамилия<font color="red">*</font></label>
-                                    {{ reg_form.surname(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.surname %}
+                                    <label>Фамилия</label>
+                                    {{ form.surname(class="custom__input__field") }}
+                                    {% for error in form.errors.surname %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
@@ -73,8 +73,8 @@
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__age__block">
                                     <label>Возраст<font color="red">*</font></label>
-                                    {{ reg_form.age(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.age %}
+                                    {{ form.age(class="custom__input__field") }}
+                                    {% for error in form.errors.age %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
@@ -97,9 +97,9 @@
                                     </div>
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__hobby__block">
-                                    <label>Хобби<font color="red">*</font></label>
-                                    {{ reg_form.hobby(class="custom__input__field") }}
-                                    {% for error in reg_form.errors.hobby %}
+                                    <label>Хобби</label>
+                                    {{ form.hobby(class="custom__input__field") }}
+                                    {% for error in form.errors.hobby %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
@@ -107,8 +107,8 @@
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__avatar__block">
                                     <label>Выберите аватар</label>
-                                    {{ reg_form.avatar(class="custom__input__field custom__file__button") }}
-                                    {% for error in reg_form.errors.avatar %}
+                                    {{ form.avatar(class="custom__input__field custom__file__button") }}
+                                    {% for error in form.errors.avatar %}
                                         <small class="form-text text-muted ">
                                             <font color="red">{{ ''.join(error) }}</font>
                                         </small>
@@ -116,7 +116,12 @@
                                 </div>
                                 <div class="reg__grid__form__grid__item reg__grid__accept__block">
                                     <div class="custom__checkbox accept__checkbox">
-                                        {{ reg_form.accept }}
+                                        {{ form.accept }}
+                                        {% for error in form.errors.accept %}
+                                            <small class="form-text text-muted ">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
                                         <label class="custom__checkbox__label" for="accept__checkbox">
                                             Согласие на обработку персональных данных<font color="red">*</font>
                                         </label>

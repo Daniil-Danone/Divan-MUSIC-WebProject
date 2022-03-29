@@ -116,69 +116,6 @@
 
         <!-- Begin page content -->
         <main role="main" class="main">
-        {% if not current_user.is_authenticated %}
-            <div class="auth__window" id="auth">
-                <a href="#" class="auth__close">
-                    <div class="close__auth__window__button"></div>
-                </a>
-                <form method="post" novalidate enctype="multipart/form-data">
-                    <div class="auth__grid">
-                        <div class="auth__grid__body">
-                            <div class="auth__grid__item auth__grid__title__block">
-                                <div>
-                                    {{ form.hidden_tag() }}
-                                    {{ form.csrf_token }}
-                                </div>
-                                <div class="auth__grid__form__title">
-                                    Вход в аккаунт
-                                </div>
-                            </div>
-                            <div class="auth__grid__item auth__grid__form__block">
-                                <div class="auth__form__content__grid">
-                                    <div class="auth__form__content__grid__item auth__grid__login__block">
-                                        <label>Логин<font color="red">*</font></label>
-                                        <p>{{ form.email(class="custom__input__field") }}
-                                            {% for error in form.errors.email %}
-                                                <small class="form-text text-muted ">
-                                                    <font color="red">{{ ''.join(error) }}</font>
-                                                </small>
-                                            {% endfor %}
-                                        </p>
-                                    </div>
-                                    <div class="auth__form__content__grid__item auth__grid__password__block">
-                                        <label>Пароль<font color="red">*</font></label>
-                                        {{ form.password(class="custom__input__field") }}
-                                        {% for error in form.errors.password %}
-                                            <small class="form-text text-muted ">
-                                                <font color="red">{{ ''.join(error) }}</font>
-                                            </small>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="auth__form__content__grid__item auth__grid__rememberme__block">
-                                        <div class="custom__checkbox remember_me">
-                                            {{ form.remember_me }}
-                                            <label class="custom__checkbox__label" for="remember_me">Запомнить меня
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="auth__form__content__grid__item auth__grid__error__block">
-                                        <div class="error">
-                                            {{ error }}
-                                        </div>
-                                    </div>
-                                    <div class="auth__form__content__grid__item auth__grid__button__block">
-                                        <button type="submit" class="form__submit">ВОЙТИ</button>
-                                    </div>
-                                    <div class="auth__not__yet__registered__text">
-                                        <a href="/registration" class="inline__link link">Ещё не зарегистрированы?</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        {% endif %}
             {% block content %}{% endblock %}
         </main>
 

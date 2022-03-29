@@ -1,6 +1,7 @@
 import os
 import yadisk
 import datetime
+import requests
 from PIL import Image
 from flask_login import LoginManager
 from static.data import db_session
@@ -11,7 +12,7 @@ from static.forms.post_form import PostForm
 from static.forms.login_form import LoginForm
 from static.forms.product_form import ProductForm
 from static.forms.registration_form import RegistrationForm
-from flask import Flask, render_template, redirect, make_response, jsonify
+from flask import Flask, render_template, redirect, make_response, jsonify, request
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 
@@ -72,52 +73,42 @@ def index():
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
-    log_form = LoginForm()
-    reg_form = RegistrationForm()
+    db_sess = db_session.create_session()
+    form = RegistrationForm()
     user = User()
-    if reg_form.validate_on_submit():
-        db_sess = db_session.create_session()
-        if db_sess.query(User).filter(User.email == reg_form.email.data).first():
+    if form.validate_on_submit():
+        if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('registration.html',
-                                   title='Регистрация нового пользователя',
-                                   email_exist='Пользователь с данной почтой уже существует!',
-                                   reg_form=reg_form,
-                                   form=log_form)
-
+                                   title='Регистрация',
+                                   form=form,
+                                   message="Пользователь с данной почтой уже зарегистрирован в системе")
         else:
-            user.username = reg_form.username.data
-            user.email = reg_form.email.data
-            user.hashed_password = reg_form.password.data
-            user.set_password(reg_form.password.data)
-            user.name = reg_form.name.data
-            user.surname = reg_form.surname.data
-            user.age = int(reg_form.age.data)
-            user.sex = reg_form.sex.data
-            user.hobby = reg_form.hobby.data
+            user.username = form.username.data
+            user.email = form.email.data
+            user.hashed_password = form.password.data
+            user.set_password(form.password.data)
+            user.name = form.name.data
+            user.surname = form.surname.data
+            user.sex = form.sex.data
+            user.age = str(form.age.data)
+            user.hobby = form.hobby.data
             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
-            user.posts = 0
-            if reg_form.avatar.data != '':
-                try:
-                    img = reg_form.avatar.data
-                    filename = f'{user.email}.png'
-                    img.save(filename)
-                    image = Image.open(filename)
-                    out_img = crop_max_square(image)
-                    out_img.save(f"static/img/avatars/{user.email}.png")
-                    os.remove(filename)
-                    user.avatar_path = f"/img/avatars/{user.email}.png"
-                except Exception as ex:
-                    print(ex)
-                    pass
+            if form.avatar.data != '':
+                img = form.avatar.data
+                filename = f'{form.email.data}.png'
+                img.save(filename)
+                image = Image.open(filename)
+                out_img = crop_max_square(image)
+                out_img.save(f"static/img/avatars/{form.email.data}.png")
+                user.avatar_path = f"/img/avatars/{form.email.data}.png"
+                os.remove(filename)
             db_sess.add(user)
             db_sess.commit()
             login_user(user)
             return redirect('/')
     return render_template('registration.html',
-                           title='Регистрация нового пользователя',
-                           reg_form=reg_form,
-                           form=log_form)
-
+                           title='Регистрация',
+                           form=form)
 
 @app.route('/logout')
 @login_required
@@ -213,6 +204,17 @@ def marketplace():
                            form=log_form)
 
 
+@app.route('/marketplace/product_id_<int:product_id>')
+def download_file(product_id):
+    db_sess = db_session.create_session()
+    product = db_sess.query(Product).get(product_id)
+    disk.publish(product.path)
+    request = requests.get(disk.get_download_link(product.path))
+    with open(rf'C:\Downloads\{product.content}', 'wb') as f:
+        f.write(request.content)
+    return redirect('/marketplace')
+
+
 @login_required
 @app.route('/add_product', methods=['POST', 'GET'])
 def add_product():
@@ -229,10 +231,22 @@ def add_product():
             file = product_form.content.data
             filename = secure_filename(product_form.content.data.filename)
             file.save(filename)
+            product.content = filename
+
+            if filename.split()[-1] == 'pdf':
+                product.icon_file = '/img/icons/pdf3.png'
+            if filename.split()[-1] == 'txt':
+                product.icon_file = '/img/icons/txt.png'
+            if filename.split()[-1] == 'doc' or filename.split()[-1] == 'docx':
+                product.icon_file = '/img/icons/doc.png'
+            if filename.split()[-1] == 'gp' or filename.split()[-1] == 'gpx' or filename.split()[-1] == 'gp5':
+                product.icon_file = '/img/icons/gpx.png'
+
             if not disk.exists(f"/Site-products/{current_user.email}"):
                 disk.mkdir(f"/Site-products/{current_user.email}")
             disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
             product.path = f"/Site-products/{current_user.email}/{filename}"
+            os.remove(filename)
         product.creator = current_user.username
         product.creator_avatar_path = current_user.avatar_path
         product.is_sold = False
