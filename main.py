@@ -1,15 +1,19 @@
-import datetime
 import os
+import yadisk
+import datetime
 from PIL import Image
 from flask_login import LoginManager
 from static.data import db_session
 from static.data.users import User
 from static.data.posts import Post
+from static.data.products import Product
 from static.forms.post_form import PostForm
 from static.forms.login_form import LoginForm
+from static.forms.product_form import ProductForm
 from static.forms.registration_form import RegistrationForm
 from flask import Flask, render_template, redirect, make_response, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -17,6 +21,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 app.config['SECRET_KEY'] = 'Divan_music'
+
+yandex_disk_token = os.environ.get('YANDEX_DISK_API')
+disk = yadisk.YaDisk(token=yandex_disk_token)
 
 
 @login_manager.user_loader
@@ -33,23 +40,39 @@ def not_found():
 @app.route('/', methods=['POST', 'GET'])
 def index():
     db_session.global_init("static/databases/users.db")
-    try:
-        if current_user:
-            image = f'/img/avatars/{current_user.email}.png'
-            return render_template('index.html',
-                                   title=f'Главная - DIVAN music',
-                                   image=image,
-                                   user=current_user)
-        else:
-            return render_template('index.html',
-                                   title='Главная - DIVAN music')
-    except:
+    if current_user.is_authenticated:
+        avatar = f'/img/avatars/{current_user.email}.png'
         return render_template('index.html',
+                               title=f'Главная - DIVAN music',
+                               image=avatar,
+                               user=current_user)
+    else:
+        log_form = LoginForm()
+        if log_form.validate_on_submit():
+            db_sess = db_session.create_session()
+            user = db_sess.query(User).filter(User.email == log_form.email.data).first()
+            if user:
+                if user.check_password(log_form.password.data):
+                    login_user(user, remember=log_form.remember_me.data)
+                    return redirect('/')
+                else:
+                    return render_template('index.html',
+                                           form=log_form,
+                                           error='Неверный пароль!',
+                                           title='Авторизация - DIVAN music')
+            else:
+                return render_template('index.html',
+                                       form=log_form,
+                                       error='Аккаунта с таким логином не существует!',
+                                       title='Авторизация - DIVAN music')
+        return render_template('index.html',
+                               form=log_form,
                                title='Главная - DIVAN music')
 
 
 @app.route('/registration', methods=['POST', 'GET'])
 def registration():
+    log_form = LoginForm()
     reg_form = RegistrationForm()
     user = User()
     if reg_form.validate_on_submit():
@@ -58,7 +81,8 @@ def registration():
             return render_template('registration.html',
                                    title='Регистрация нового пользователя',
                                    email_exist='Пользователь с данной почтой уже существует!',
-                                   form=reg_form)
+                                   reg_form=reg_form,
+                                   form=log_form)
 
         else:
             user.username = reg_form.username.data
@@ -91,30 +115,8 @@ def registration():
             return redirect('/')
     return render_template('registration.html',
                            title='Регистрация нового пользователя',
-                           form=reg_form)
-
-
-@app.route('/auth', methods=['POST', 'GET'])
-def auth():
-    log_form = LoginForm()
-    if log_form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == log_form.email.data).first()
-        if user:
-            if user.check_password(log_form.password.data):
-                login_user(user, remember=log_form.remember_me.data)
-                return redirect('/')
-            else:
-                return render_template('auth.html',
-                                       form=log_form,
-                                       error='Неверный пароль!')
-        else:
-            return render_template('auth.html',
-                                   form=log_form,
-                                   error='Аккаунта с таким логином не существует!')
-    return render_template('auth.html',
-                           form=log_form,
-                           title='Авторизация - DIVAN music')
+                           reg_form=reg_form,
+                           form=log_form)
 
 
 @app.route('/logout')
@@ -134,7 +136,7 @@ def profile():
 
 @login_required
 @app.route('/add_post', methods=['POST', 'GET'])
-def news():
+def add_post():
     post_form = PostForm()
     post = Post()
     if post_form.validate_on_submit():
@@ -173,31 +175,78 @@ def posts():
     posts = db_sess.query(Post).all()
     posts.reverse()
 
+    nav_path = [['/', 'Главная'], ['/posts', 'Новости']]
+
     if current_user.is_authenticated:
         image = current_user.email
+        log_form = None
     else:
         image = None
+        log_form = LoginForm()
 
-    nav_path = [['/', 'Главная'], ['/posts', 'Новости']]
     return render_template('posts.html',
                            user=current_user,
                            title=f'Создание записи - DIVAN music',
                            image=f'/img/avatars/{image}.png',
                            posts=posts,
-                           nav_path=nav_path)
+                           nav_path=nav_path,
+                           form=log_form)
 
 
 @app.route('/marketplace')
 def marketplace():
+    db_sess = db_session.create_session()
+    products = db_sess.query(Product).all()
+    products.reverse()
     if current_user.is_authenticated:
         image = current_user.email
+        log_form = None
+
     else:
         image = None
+        log_form = LoginForm()
     return render_template('marketplace_main_page.html',
                            user=current_user,
                            title=f'Маркетплейс - DIVAN music',
                            image=f'/img/avatars/{image}.png',
-                           posts=posts,)
+                           products=products,
+                           form=log_form)
+
+
+@login_required
+@app.route('/add_product', methods=['POST', 'GET'])
+def add_product():
+    product_form = ProductForm()
+    product = Product()
+    if product_form.validate_on_submit():
+        db_sess = db_session.create_session()
+        product.title = product_form.title.data
+        product.description = product_form.description.data
+        product.theme = product_form.theme.data
+        product.price = product_form.price.data
+
+        if product_form.content.data != '':
+            file = product_form.content.data
+            filename = secure_filename(product_form.content.data.filename)
+            file.save(filename)
+            if not disk.exists(f"/Site-products/{current_user.email}"):
+                disk.mkdir(f"/Site-products/{current_user.email}")
+            disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
+            product.path = f"/Site-products/{current_user.email}/{filename}"
+        product.creator = current_user.username
+        product.creator_avatar_path = current_user.avatar_path
+        product.is_sold = False
+        product.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
+        db_sess.add(product)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect('/')
+
+    return render_template('add_product.html',
+                           user=current_user,
+                           title=f'Создание записи - DIVAN music',
+                           image=f'/img/avatars/{current_user.email}.png',
+                           form=product_form)
 
 
 def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:

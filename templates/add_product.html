@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div class="navigation__str">
+                Контент
+            </div>
+            <form method="post" novalidate enctype="multipart/form-data">
+                <div class="add__product__grid">
+                    <div class="add__product__grid__body">
+                        <div class="add__product__grid__item add__product__title__block">
+                            <div>
+                                {{ form.hidden_tag() }}
+                                {{ form.csrf_token }}
+                            </div>
+                            <div class="add__product__form__title">
+                                Добавление товара
+                            </div>
+                        </div>
+                        <div class="add__product__grid__item add__product__left__border">
+                            Ничего
+                        </div>
+                        <div class="add__product__grid__item add__product__form__block">
+                            <div class="add__product__form__fields__grid">
+                                <div class="add__product__form__fields__grid__item add__product__title">
+                                    <label>Название товара<font color="red">*</font></label>
+                                    <p>{{ form.title(class="custom__input__field") }}
+                                        {% for error in form.errors.title %}
+                                            <small class="">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="add__product__form__fields__grid__item add__product__description">
+                                    <label>Описание</label>
+                                    {{ form.description(class="custom__input__field add__post__custom__text__area") }}
+                                    {% for error in form.errors.description %}
+                                        <small class="">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__product__form__fields__grid__item add__product__theme">
+                                    <label>Тематика записи</label>
+                                    {{ form.theme(class="custom__input__field") }}
+                                    {% for error in form.errors.theme %}
+                                        <small class="">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__product__form__fields__grid__item add__product__content">
+                                    <label>Приложите контент</label>
+                                    {{ form.content(class="custom__input__field custom__file__button") }}
+                                    {% for error in form.errors.content %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="add__product__form__fields__grid__item add__product__price">
+                                    <label>Цена товара<font color="red">*</font></label>
+                                    <p>{{ form.price(class="custom__input__field") }}
+                                        {% for error in form.errors.price %}
+                                            <small class="">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="add__product__form__fields__grid__item add__product__button">
+                                    <button type="submit" class="form__submit">ДОБАВИТЬ ТОВАР</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add__product__grid__item add__product__right__border">
+                            Ничего
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

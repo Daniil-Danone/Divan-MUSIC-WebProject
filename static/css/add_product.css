@@ -1,0 +1,89 @@
+/*Сетка GRID*/
+
+.add__product__grid {
+	display: block;
+}
+
+.add__product__grid__body {
+    margin: 0 0 20px 0;
+	display: grid;
+	max-width: 1180px;
+	grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
+	grid-gap: 10px;
+	grid-template-areas:
+			"left__border title right__border"
+			"left__border content right__border";
+}
+
+.add__product__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.add__product__title__block {grid-area: title; background-color: #303030; border-radius: 10px;}
+.add__product__left__border {grid-area: left__border; background-color: #303030; border-radius: 10px;}
+.add__product__form__block {grid-area: content; background-color: #303030; border-radius: 10px;}
+.add__product__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+
+/**/
+/**/
+
+/*Строение заголовка формы*/
+
+.add__product__form__title {
+	font-size: 25px;
+	text-align: center;
+}
+
+/**/
+/**/
+
+/*Строение формы*/
+
+.add__product__form__fields__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto [row-end];
+	grid-template-columns: [start] 1fr [col-end];
+	grid-gap: 10px;
+    grid-template-areas:
+            'title title'
+            'description description'
+            'theme price'
+            'content content'
+            'button button';
+}
+
+.add__product__title {grid-area: title;}
+.add__product__description {grid-area: description;}
+.add__product__theme {grid-area: theme;}
+.add__product__content {grid-area: price;}
+.add__product__price {grid-area: content;}
+.add__product__button {grid-area: button;}
+
+.add__post__custom__text__area {
+	outline: none;
+	resize: none;
+	height: 345px;
+}
+
+.add__post__custom__text__area:placeholder-shown {
+	font-size: 16px;
+	font-family: "Montserrat-Regular", sans-serif;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar {
+  width: 10px;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.add__post__custom__text__area::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #49bce9, #5680E9);
+}

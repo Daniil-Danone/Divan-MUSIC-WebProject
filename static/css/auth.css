@@ -5,15 +5,15 @@
 }
 
 .auth__grid__body {
-    margin: 0 0 20px 0;
+    margin: 0 auto;
 	display: grid;
 	max-width: 1180px;
 	grid-template-rows: [start] auto [row2] auto [row-end];
-	grid-template-columns: [start] 1fr [col2] 2fr [col3] 1fr [col-end];
+	grid-template-columns: [start] 1fr [col-end];
 	grid-gap: 10px;
 	grid-template-areas:
-			"left__border form__title right__border"
-			"left__border form__content right__border";
+			"form__title"
+			"form__content";
 }
 
 .auth__grid__item {
@@ -44,15 +44,16 @@
 
 .auth__form__content__grid {
     display: grid;
-	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row-end];
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto [row-end];
 	grid-template-columns: [start] 1fr [col-end];
-	grid-gap: 20px;
+	grid-gap: 15px;
     grid-template-areas:
             'login'
             'password'
             'rememberme'
             'error'
             'button'
+            'unregistered'
 ;
 }
 
@@ -61,3 +62,4 @@
 .auth__grid__rememberme__block {grid-area: rememberme;}
 .auth__grid__error__block {grid-area: error;}
 .auth__grid__button__block {grid-area: button;}
+.auth__not__yet__registered__text {grid-area: unregistered;}

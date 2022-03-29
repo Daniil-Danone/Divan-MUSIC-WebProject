@@ -9,9 +9,10 @@
 	display: grid;
 	max-width: 1180px;
 	grid-template-rows: [start] auto [row-end];
-	grid-template-columns: [start] 5fr [col2] 1fr [col-end];
+	grid-template-columns: [start] 4fr [col2] 1fr [col-end];
 	grid-gap: 10px;
 	grid-template-areas:
+			"top tools"
 			"content tools";
 }
 
@@ -21,11 +22,34 @@
     justify-content: center;
 }
 
-.marketplace__page__content {grid-area: content; background-color: #303030; border-radius: 10px;}
+.marketplace__page__content__block {grid-area: content; background-color: #303030; border-radius: 10px;}
 .marketplace__page__tools__block {grid-area: tools; background-color: #303030; border-radius: 10px;}
+.marketplace__page__top__content__block {grid-area: top; background-color: #303030; border-radius: 10px;}
 
 /**/
 /**/
+
+/*Разметка топа товарной сетки*/
+
+.marketplace__top__content__grid {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.search__field__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] auto [col2] auto [col-end];
+	grid-template-areas:
+			'search__field button';
+}
+
+
+.search__field__grid input {grid-area: search__field;}
+.search__field__grid.search__button {grid-area: button;}
+
+
 
 /*Разметка товарной сетки*/
 
@@ -34,6 +58,7 @@
 	grid-template-rows: [start] auto [row-end];
 	grid-template-columns: [start] 1fr [col2] 1fr [col-end];
 	grid-gap: 10px;
+	justify-content: space-between;
 }
 
 .marketplace__products__grid__item {

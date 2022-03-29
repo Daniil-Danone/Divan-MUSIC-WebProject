@@ -4,8 +4,12 @@ $(document).ready(function () {
         $('body').toggleClass('lock')
     });
 
-    $('.custom__checkbox').click(function(event) {
-        $('.custom__checkbox').toggleClass('active')
+    $('.custom__checkbox.accept__checkbox').click(function(event) {
+        $('.custom__checkbox.accept__checkbox').toggleClass('active')
+    });
+
+    $('.custom__checkbox.remember_me').click(function(event) {
+        $('.custom__checkbox.remember_me').toggleClass('active')
     });
 
     $(document).on('click', '.custom__radio__button__item', function(event) {
@@ -14,7 +18,5 @@ $(document).ready(function () {
         $(this).toggleClass('active');
         $(this).find('input').prop('checked', true);
         return false
-        }
-
-    )
+    });
 });
