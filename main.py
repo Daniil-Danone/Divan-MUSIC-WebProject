@@ -1,4 +1,6 @@
 import os
+import random
+
 import yadisk
 import datetime
 import requests
@@ -143,10 +145,10 @@ def add_post():
                 img.save(f"static/img/post_img/{current_user.username}_{current_user.posts}.png")
                 post.path = f'/img/post_img/{current_user.username}_{current_user.posts}.png'
                 current_user.posts = current_user.posts + 1
-                post.creator_avatar_path = current_user.avatar_path
             except Exception as ex:
                 print(ex)
                 pass
+        post.creator_avatar_path = current_user.avatar_path
         post.creator = current_user.username
         db_sess.add(post)
         db_sess.merge(current_user)
@@ -220,6 +222,8 @@ def download_file(product_id):
 def add_product():
     product_form = ProductForm()
     product = Product()
+    error = None
+
     if product_form.validate_on_submit():
         db_sess = db_session.create_session()
         product.title = product_form.title.data
@@ -227,34 +231,64 @@ def add_product():
         product.theme = product_form.theme.data
         product.price = product_form.price.data
 
-        if product_form.content.data != '':
+        if product_form.content.data:
             file = product_form.content.data
             filename = secure_filename(product_form.content.data.filename)
             file.save(filename)
-            product.content = filename
 
-            if filename.split()[-1] == 'pdf':
+            if filename.split('.')[-1] == 'pdf':
                 product.icon_file = '/img/icons/pdf3.png'
-            if filename.split()[-1] == 'txt':
+            elif filename.split('.')[-1] == 'txt':
                 product.icon_file = '/img/icons/txt.png'
-            if filename.split()[-1] == 'doc' or filename.split()[-1] == 'docx':
+            elif filename.split('.')[-1] == 'doc' or filename.split()[-1] == 'docx':
                 product.icon_file = '/img/icons/doc.png'
-            if filename.split()[-1] == 'gp' or filename.split()[-1] == 'gpx' or filename.split()[-1] == 'gp5':
+            elif filename.split('.')[-1] == 'gp' or filename.split()[-1] == 'gpx' or filename.split()[-1] == 'gp5':
                 product.icon_file = '/img/icons/gpx.png'
+            else:
+                product.icon_file = None
 
             if not disk.exists(f"/Site-products/{current_user.email}"):
                 disk.mkdir(f"/Site-products/{current_user.email}")
-            disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
-            product.path = f"/Site-products/{current_user.email}/{filename}"
-            os.remove(filename)
+            if not disk.exists(f"/Site-products/{current_user.email}/{filename}"):
+                disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
+                product.path = f"/Site-products/{current_user.email}/{filename}"
+                product.content = filename
+                os.remove(filename)
+            else:
+                while True:
+                    new_filename = filename.replace(filename.split('.')[-1], '').rstrip('.') + \
+                                   str(random.randrange(0, 9999)) + '.' + filename.split('.')[-1]
+                    if not disk.exists(f"/Site-products/{current_user.email}/{new_filename}"):
+                        disk.upload(filename, f"/Site-products/{current_user.email}/{new_filename}")
+                        product.path = f"/Site-products/{current_user.email}/{new_filename}"
+                        product.content = new_filename
+                        os.remove(filename)
+                        break
+        else:
+            error = 'Вы должны добавить продукт (ноты)'
+
         product.creator = current_user.username
         product.creator_avatar_path = current_user.avatar_path
         product.is_sold = False
         product.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
-        db_sess.add(product)
-        db_sess.merge(current_user)
-        db_sess.commit()
-        return redirect('/')
+
+        if error:
+            product_form.title.data = product.title
+            product_form.description.data = product.description
+            product_form.theme.data = product.theme
+            product_form.price.data = product.price
+            product_form.content.data = product.content
+            return render_template('add_product.html',
+                                   user=current_user,
+                                   title=f'Создание записи - DIVAN music',
+                                   image=f'/img/avatars/{current_user.email}.png',
+                                   error=error,
+                                   form=product_form)
+        else:
+            db_sess.add(product)
+            db_sess.merge(current_user)
+            db_sess.commit()
+            return redirect('/marketplace')
 
     return render_template('add_product.html',
                            user=current_user,

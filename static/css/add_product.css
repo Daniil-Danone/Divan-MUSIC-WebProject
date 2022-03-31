@@ -44,7 +44,7 @@
 
 .add__product__form__fields__grid {
 	display: grid;
-	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto [row-end];
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto [row7] auto [row-end];
 	grid-template-columns: [start] 1fr [col-end];
 	grid-gap: 10px;
     grid-template-areas:
@@ -52,6 +52,7 @@
             'description description'
             'theme price'
             'content content'
+			'error error'
             'button button';
 }
 
@@ -60,6 +61,7 @@
 .add__product__theme {grid-area: theme;}
 .add__product__content {grid-area: price;}
 .add__product__price {grid-area: content;}
+.error {grid-area: error;}
 .add__product__button {grid-area: button;}
 
 .add__post__custom__text__area {

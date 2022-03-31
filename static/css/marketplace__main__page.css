@@ -67,6 +67,10 @@
 	border-radius: 10px;
 }
 
+.marketplace__products__grid__item.user_is_seller {
+	border: 1px solid #278828;
+}
+
 /*Разметка товара*/
 .marketplace__product__grid {
 	display: grid;
