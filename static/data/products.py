@@ -19,3 +19,4 @@ class Product(SqlAlchemyBase, UserMixin):
     creator_avatar_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     icon_file = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    preview_path  = sqlalchemy.Column(sqlalchemy.String, nullable=True)

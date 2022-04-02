@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div class="navigation__str">
+                Контент
+            </div>
+            <div class="product__grid">
+                <div class="product__grid__body">
+                    <div class="product__grid__item product__page__content">
+                        <img src="{{ url_for('static', filename=product.preview_path )}}" alt="">
+                    </div>
+                    <div class="product__grid__item product__page__info">
+                        <div class="product__page__info__grid">
+                            <div class="product__info__item seller">
+                                <div class="marketplace__product__item creator__avatar">
+                                    <img src="{{ url_for('static', filename=product.creator_avatar_path )}}" alt="">
+                                </div>
+                                <div class="marketplace__product__item product__seller__nickname">
+                                    {{ product.creator }}
+                                </div>
+                            </div>
+                            <div class="product__info__item product__page__title product__title">
+                                    {{ product.title }}
+                                </div>
+                            <div class="product__info__item description">
+                                    {{ product.description }}
+                                </div>
+                            <div class="product__info__item other">
+                                    Что-то другое
+                                </div>
+                        </div>
+                    </div>
+                    <div class="product__grid__item product__page__shopping__card">
+                        <div class="shopping__card__grid">
+                            <div class="shopping__card__item price">
+                                <p>Цена:</p>
+                                <p>{{ product.price }} $ (USD)</p>
+
+                            </div>
+                            <div class="shopping__card__item button">
+                                <a href="/marketplace/downloading/product_id_{{ product.id }}" class="authorization__link">
+                                    Купить
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

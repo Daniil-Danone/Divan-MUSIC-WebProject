@@ -111,6 +111,7 @@
 
 .product__title {
 	grid-area: title;
+	padding-bottom: 5px;
 	border-bottom: 2px solid #505050;
 }
 .product__description {

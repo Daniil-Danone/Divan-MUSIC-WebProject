@@ -1,0 +1,93 @@
+/*Сетка GRID*/
+
+.product__grid {
+    display: block;
+}
+
+.product__grid__body {
+    display: grid;
+    grid-template-rows: [start] auto [row2] auto [row3] 1fr [row-end];
+	grid-template-columns: [col-start] auto [col2] 1fr [col3] 1fr [col-end];
+    gap: 10px;
+    grid-template-areas:
+            "content info info"
+            "content buying buying"
+            "content nothing nothing";
+}
+
+.product__grid__item {
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.product__page__content {
+    grid-area: content;
+    background-color: #303030;
+    border-radius: 10px;
+}
+
+.product__page__content img{
+    height: 600px;
+    border-radius: 10px;
+    filter: grayscale(30%);
+}
+
+.product__page__info {
+    display: block;
+    grid-area: info;
+    background-color: #303030;
+    border-radius: 10px;
+}
+
+.product__page__info__grid {
+    display: grid;
+    grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row-end];
+	grid-template-columns: [col-start] auto [col-end];
+    gap: 10px;
+    grid-template-areas:
+            "product__title"
+            "seller"
+            "description"
+            "other";
+}
+
+.seller {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    grid-area: seller;
+}
+.product__page__title {grid-area: product__title;}
+.description {grid-area: description;}
+.other {grid-area: other;}
+
+.product__page__shopping__card {
+    display: block;
+    grid-area: buying;
+    background-color: #303030;
+    border-radius: 10px;
+}
+
+.shopping__card__grid {
+    display: grid;
+    margin-bottom: 10px;
+    grid-template-rows: [start] auto [row2] auto [row-end];
+	grid-template-columns: [col-start] auto [col-end];
+    gap: 20px;
+    grid-template-areas:
+            "price"
+            "button";
+}
+
+.shopping__card__item.price {
+    grid-area: price;
+}
+.shopping__card__item.button {
+    grid-area: button;
+}
+
+.text__subtitle {
+    color: rgba(255, 255, 255, 0.5);
+}

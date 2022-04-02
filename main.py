@@ -1,6 +1,6 @@
 import os
 import random
-
+import fitz
 import yadisk
 import datetime
 import requests
@@ -207,14 +207,33 @@ def marketplace():
 
 
 @app.route('/marketplace/product_id_<int:product_id>')
+def product_page(product_id):
+    db_sess = db_session.create_session()
+    product = db_sess.query(Product).get(product_id)
+    if current_user.is_authenticated:
+        image = current_user.email
+        log_form = None
+
+    else:
+        image = None
+        log_form = LoginForm()
+    return render_template('product__page.html',
+                           user=current_user,
+                           title=f'{product.title} - DIVAN music',
+                           image=f'/img/avatars/{image}.png',
+                           product=product,
+                           form=log_form)
+
+
+@app.route('/marketplace/downloading/product_id_<int:product_id>')
 def download_file(product_id):
     db_sess = db_session.create_session()
     product = db_sess.query(Product).get(product_id)
     disk.publish(product.path)
-    request = requests.get(disk.get_download_link(product.path))
+    download_request = requests.get(disk.get_download_link(product.path))
     with open(rf'C:\Downloads\{product.content}', 'wb') as f:
-        f.write(request.content)
-    return redirect('/marketplace')
+        f.write(download_request.content)
+    return redirect(f'/marketplace/product_id_{product_id}')
 
 
 @login_required
@@ -235,9 +254,26 @@ def add_product():
             file = product_form.content.data
             filename = secure_filename(product_form.content.data.filename)
             file.save(filename)
-
             if filename.split('.')[-1] == 'pdf':
                 product.icon_file = '/img/icons/pdf3.png'
+                zoom_x = 2.0
+                zoom_y = 2.0
+                mat = fitz.Matrix(zoom_x, zoom_y)
+                try:
+                    doc = fitz.open(filename)
+                    for page in doc:
+                        pix = page.get_pixmap(matrix=mat)
+                        pix.save(f"static/img/products/preview/{filename.replace('.pdf', '')}_preview.png")
+                        break
+                except Exception as ex:
+                    print(ex)
+
+                img = Image.open(f"static/img/products/preview/{filename.replace('.pdf', '')}_preview.png")
+                watermark = Image.open('static/img/products/preview/Watermark.png')
+                img.paste(watermark, (0, 0), watermark)
+                img.save(f"static/img/products/preview/{filename.replace('.pdf', '')}_preview.png")
+                product.preview_path = f"/img/products/preview/{filename.replace('.pdf', '')}_preview.png"
+
             elif filename.split('.')[-1] == 'txt':
                 product.icon_file = '/img/icons/txt.png'
             elif filename.split('.')[-1] == 'doc' or filename.split()[-1] == 'docx':
@@ -253,7 +289,6 @@ def add_product():
                 disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
                 product.path = f"/Site-products/{current_user.email}/{filename}"
                 product.content = filename
-                os.remove(filename)
             else:
                 while True:
                     new_filename = filename.replace(filename.split('.')[-1], '').rstrip('.') + \
@@ -262,7 +297,6 @@ def add_product():
                         disk.upload(filename, f"/Site-products/{current_user.email}/{new_filename}")
                         product.path = f"/Site-products/{current_user.email}/{new_filename}"
                         product.content = new_filename
-                        os.remove(filename)
                         break
         else:
             error = 'Вы должны добавить продукт (ноты)'
@@ -288,6 +322,7 @@ def add_product():
             db_sess.add(product)
             db_sess.merge(current_user)
             db_sess.commit()
+
             return redirect('/marketplace')
 
     return render_template('add_product.html',
