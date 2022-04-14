@@ -13,7 +13,9 @@ from static.data.products import Product
 from static.forms.post_form import PostForm
 from static.forms.login_form import LoginForm
 from static.forms.product_form import ProductForm
+from static.forms.start_registration import StartRegistrationForm
 from static.forms.registration_form import RegistrationForm
+
 from flask import Flask, render_template, redirect, make_response, jsonify, request
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
@@ -74,6 +76,27 @@ def index():
 
 
 @app.route('/registration', methods=['POST', 'GET'])
+def start_registration():
+    db_sess = db_session.create_session()
+    form = StartRegistrationForm()
+    user = User()
+    if form.validate_on_submit():
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('registration.html',
+                                   title='Регистрация',
+                                   form=form,
+                                   message="Пользователь с данной почтой уже зарегистрирован в системе")
+        else:
+            user.email = form.email.data
+            db_sess.add(user)
+            db_sess.commit()
+            return "Success"
+
+    return render_template('registration_start.html',
+                           title='Регистрация',
+                           form=form)
+
+
 def registration():
     db_sess = db_session.create_session()
     form = RegistrationForm()
@@ -210,6 +233,9 @@ def marketplace():
 def product_page(product_id):
     db_sess = db_session.create_session()
     product = db_sess.query(Product).get(product_id)
+    disk.publish(product.path)
+    download_link = disk.get_download_link(product.path)
+    print(download_link)
     if current_user.is_authenticated:
         image = current_user.email
         log_form = None
@@ -222,6 +248,7 @@ def product_page(product_id):
                            title=f'{product.title} - DIVAN music',
                            image=f'/img/avatars/{image}.png',
                            product=product,
+                           download=download_link,
                            form=log_form)
 
 
@@ -294,10 +321,10 @@ def add_product():
                     new_filename = filename.replace(filename.split('.')[-1], '').rstrip('.') + \
                                    str(random.randrange(0, 9999)) + '.' + filename.split('.')[-1]
                     if not disk.exists(f"/Site-products/{current_user.email}/{new_filename}"):
-                        disk.upload(filename, f"/Site-products/{current_user.email}/{new_filename}")
-                        product.path = f"/Site-products/{current_user.email}/{new_filename}"
-                        product.content = new_filename
                         break
+                disk.upload(filename, f"/Site-products/{current_user.email}/{new_filename}")
+                product.path = f"/Site-products/{current_user.email}/{new_filename}"
+                product.content = new_filename
         else:
             error = 'Вы должны добавить продукт (ноты)'
 

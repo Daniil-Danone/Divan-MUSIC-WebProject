@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div class="navigation__str">
+                Контент
+            </div>
+            <form method="post" class="registration__form__start" novalidate enctype="multipart/form-data">
+                <div class="reg__grid">
+                    <div class="reg__grid__body">
+                        <div class="reg__grid__item reg__grid__title__block">
+                            <div>
+                                {{ form.hidden_tag() }}
+                                {{ form.csrf_token }}
+                            </div>
+                            <div class="reg__grid__form__title">
+                                Регистрация пользователя
+                            </div>
+                        </div>
+                        <div class="reg__grid__item reg__grid__form__block">
+                            <div class="reg__form__content__grid">
+                                <div class="reg__grid__form__grid__item reg__grid__field__title__block">
+                                    <label class="form__field__title">Почта<font color="red">*</font></label>
+                                </div>
+
+                                <div class="reg__grid__form__grid__item reg__grid__field__block">
+                                    {{ form.email(class="email custom__input__field") }}
+                                </div>
+
+                                <div class="reg__grid__form__grid__item reg__grid__button__block">
+                                    <button class="form__submit">Продолжить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reg__grid__item reg__grid__left__border">
+                            Ничего
+                        </div>
+                        <div class="reg__grid__item reg__grid__right__border">
+                            Ничего
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

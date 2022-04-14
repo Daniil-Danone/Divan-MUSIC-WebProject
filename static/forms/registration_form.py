@@ -8,12 +8,13 @@ class RegistrationForm(FlaskForm):
     username = StringField('Ник', validators=[DataRequired(message='Это поле должно быть заполнено!')],
                            name='username',
                            id='username',
-                           render_kw={"placeholder": "Придумайте никнейм..."}, )
+                           render_kw={"placeholder": "Придумайте никнейм...",
+                                      "autocomplete": "off"}, )
 
     email = EmailField('Почта', validators=[DataRequired(message='Это поле должно быть заполнено!')],
                        name='email',
                        id='email',
-                       render_kw={"placeholder": "Введите почту..."})
+                       render_kw={"placeholder": "Введите почту...", "autocomplete": "off"})
 
     password = PasswordField('Пароль', validators=[DataRequired(message='Это поле должно быть заполнено!'),
                                                    Length(min=4, max=32,

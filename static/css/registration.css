@@ -44,29 +44,18 @@
 
 .reg__form__content__grid {
     display: grid;
-	grid-template-rows: [start] auto [row2] auto [row3] auto [row4] auto [row5] auto [row6] auto
-    [row7] auto [row8] auto [row-end];
-	grid-template-columns: [start] 1fr [col2] 1fr [col-end];
-	grid-gap: 20px;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 3fr [col2] 1fr [col-end];
+	grid-gap: 10px;
     grid-template-areas:
-            'nickname nickname'
-            'email password'
-            'name surname'
-            'age sex'
-            'hobby hobby'
-            'avatar avatar'
-            'accept accept'
-            'button button';
+            'field_title field_title'
+            'field button';
 }
 
-.reg__grid__nickname__block {grid-area: nickname;}
-.reg__grid__email__block {grid-area: email;}
-.reg__grid__password__block {grid-area: password;}
-.reg__grid__name__block {grid-area: name;}
-.reg__grid__surname__block {grid-area: surname;}
-.reg__grid__age__block {grid-area: age;}
-.reg__grid__sex__block {grid-area: sex;}
-.reg__grid__hobby__block {grid-area: hobby;}
-.reg__grid__avatar__block {grid-area: avatar;}
-.reg__grid__accept__block {grid-area: accept;}
+.reg__grid__field__title__block {grid-area: field_title;}
+.reg__grid__email__block {grid-area: field;}
 .reg__grid__button__block {grid-area: button;}
+
+.form__field__title {
+	margin-left: 5px;
+}

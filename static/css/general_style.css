@@ -411,13 +411,17 @@ a.auth__close {
 	outline: none;
 	color: white;
 	width: 100%;
-	height: 40px;
+	height: 30px;
 	display: block;
-	margin-top: 5px;
 	text-indent: 5px;
 	font-size: 16px;
-	border-radius: 10px;
+	border-radius: 5px;
 	background-color: #404040;
+}
+
+.custom__input__field.success {
+	color: #278828;
+	border: 1px solid #278828;
 }
 
 .custom__search__field {
@@ -471,7 +475,7 @@ input[type=file]::file-selector-button {
 	cursor: pointer;
 }
 
-.form__submit {
+.form__submit{
 	width: 100%;
 	color: white;
 	padding: 7px;
@@ -481,7 +485,7 @@ input[type=file]::file-selector-button {
 	transition: 0.4s ease-in-out;
 }
 
-.form__submit:hover {
+.form__submit:hover{
 	color: white;
 	background-color: #5680E9;
 }
@@ -752,8 +756,9 @@ input[type=file]::file-selector-button {
 	width: 100%;
 }
 
-.error {
+.error{
 	color: #C3073F;
+	margin-bottom: 10px;
 }
 
 @font-face {
