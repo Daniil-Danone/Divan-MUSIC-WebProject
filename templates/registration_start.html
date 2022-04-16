@@ -20,25 +20,81 @@
                         </div>
                         <div class="reg__grid__item reg__grid__form__block">
                             <div class="reg__form__content__grid">
-                                <div class="reg__grid__form__grid__item reg__grid__field__title__block">
-                                    <label class="form__field__title">Почта<font color="red">*</font></label>
+                                <div class="reg__from__elem reg__email__block">
+                                    <div class="reg__field__grid">
+                                        <div class="reg_field field__title">
+                                            <label class="form__field__title">Почта<font color="red">*</font></label>
+                                        </div>
+
+                                        <div class="reg_field field__input">
+                                            {{ form.email(class="email custom__input__field") }}
+                                        </div>
+
+                                        <div class="reg_field field__button">
+                                            <a href="#stage2">
+                                                <button type="button" id="form__continue" class="form__submit disabled" disabled>Продолжить</button>
+                                            </a>
+                                            <img id="success__img" src="../static/img/icons/ok_64px.png" alt=""
+                                                 class="success__img hide">
+                                        </div>
+
+                                        <div class="reg_field field__status">
+                                            <span id="status"></span>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="reg__grid__form__grid__item reg__grid__field__block">
-                                    {{ form.email(class="email custom__input__field") }}
+                                <div class="reg__from__elem reg__password__block" id="stage2">
+                                    <div class="reg__field__grid">
+                                        <div class="reg_field field__title">
+                                            <label class="form__field__title">Пароль<font color="red">*</font></label>
+                                        </div>
+
+                                        <div class="reg_field field__input">
+                                            {{ form.password(class="password custom__input__field") }}
+                                        </div>
+
+                                        <div class="reg_field field__button">
+                                            <a href="#stage3">
+                                                <button type="button" id="form__continue" class="form__submit disabled" disabled>Продолжить</button>
+                                            </a>
+                                            <img id="success__img" src="../static/img/icons/ok_64px.png" alt=""
+                                                 class="success__img hide">
+                                        </div>
+
+                                        <div class="reg_field field__status">
+                                            <span id="status"></span>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="reg__grid__form__grid__item reg__grid__button__block">
-                                    <button class="form__submit">Продолжить</button>
+                                <div class="reg__from__elem reg__username__block" id="stage3">
+                                    <div class="reg__field__grid">
+                                        <div class="reg_field field__title">
+                                            <label class="form__field__title">Никнейм<font color="red">*</font></label>
+                                        </div>
+
+                                        <div class="reg_field field__input">
+                                            {{ form.username(class="username custom__input__field") }}
+                                        </div>
+
+                                        <div class="reg_field field__button">
+                                            <a href="#stage4">
+                                                <button type="button" id="form__continue" class="form__submit disabled" disabled>Продолжить</button>
+                                            </a>
+                                            <img id="success__img" src="../static/img/icons/ok_64px.png" alt=""
+                                                 class="success__img hide">
+                                        </div>
+
+                                        <div class="reg_field field__status">
+                                            <span id="status"></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="reg__grid__item reg__grid__left__border">
-                            Ничего
-                        </div>
-                        <div class="reg__grid__item reg__grid__right__border">
-                            Ничего
-                        </div>
+                        <div class="reg__grid__item reg__grid__left__border"></div>
+                        <div class="reg__grid__item reg__grid__right__border"></div>
                     </div>
                 </div>
             </form>

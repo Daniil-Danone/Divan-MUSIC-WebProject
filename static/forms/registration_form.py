@@ -11,12 +11,12 @@ class RegistrationForm(FlaskForm):
                            render_kw={"placeholder": "Придумайте никнейм...",
                                       "autocomplete": "off"}, )
 
-    email = EmailField('Почта', validators=[DataRequired(message='Это поле должно быть заполнено!')],
+    email = StringField('Почта', validators=[DataRequired(message='Это поле должно быть заполнено!')],
                        name='email',
                        id='email',
                        render_kw={"placeholder": "Введите почту...", "autocomplete": "off"})
 
-    password = PasswordField('Пароль', validators=[DataRequired(message='Это поле должно быть заполнено!'),
+    password = StringField('Пароль', validators=[DataRequired(message='Это поле должно быть заполнено!'),
                                                    Length(min=4, max=32,
                                                           message='Длина пароля должна составлять от 4 до 32 символов!')],
                              id='password',

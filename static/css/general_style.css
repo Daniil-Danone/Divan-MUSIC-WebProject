@@ -173,6 +173,7 @@ body {
 	padding: 7px;
 	border: 1px solid #5680E9;
 	border-radius: 5px;
+	background-color: transparent;
 	transition: 0.4s ease-in-out;
 }
 
@@ -419,9 +420,37 @@ a.auth__close {
 	background-color: #404040;
 }
 
-.custom__input__field.success {
+
+.field__success{
 	color: #278828;
+}
+
+input.field__success{
 	border: 1px solid #278828;
+}
+
+button.disabled {
+	border-color: #555555;
+	background-color: #454545;
+	cursor: auto;
+	transition: 0.5s;
+}
+
+button.disabled:hover {
+	background-color: #454545;
+}
+
+button.hide{
+	opacity: 0;
+}
+
+
+.field__error {
+	color: #9a1a00;
+}
+
+input.field__error{
+	border: 1px solid #9a1a00;
 }
 
 .custom__search__field {
@@ -486,8 +515,8 @@ input[type=file]::file-selector-button {
 }
 
 .form__submit:hover{
-	color: white;
 	background-color: #5680E9;
+
 }
 
 .custom__checkbox {

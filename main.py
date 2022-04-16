@@ -1,4 +1,5 @@
 import os
+import eel
 import random
 import fitz
 import yadisk
@@ -369,6 +370,13 @@ def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
 
 def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
+
+
+@eel.expose
+def check_username(username):
+    db_sess = db_session.create_session()
+    if db_sess.query(User).filter(User.email == username).first():
+        return False
 
 
 if __name__ == '__main__':

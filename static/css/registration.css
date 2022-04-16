@@ -17,15 +17,14 @@
 }
 
 .reg__grid__item {
-    padding: 10px;
     align-items: center;
     justify-content: center;
 }
 
-.reg__grid__title__block {grid-area: form__title; background-color: #303030; border-radius: 10px;}
-.reg__grid__form__block {grid-area: form__content; background-color: #303030; border-radius: 10px;}
-.reg__grid__left__border {grid-area: left__border; background-color: #303030; border-radius: 10px;}
-.reg__grid__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+.reg__grid__title__block {grid-area: form__title; background-color: #303030; border-radius: 10px; padding: 10px;}
+.reg__grid__form__block {grid-area: form__content; border-radius: 10px;}
+.reg__grid__left__border {grid-area: left__border;}
+.reg__grid__right__border {grid-area: right__border;}
 
 /**/
 /**/
@@ -45,16 +44,82 @@
 .reg__form__content__grid {
     display: grid;
 	grid-template-rows: [start] auto [row-end];
-	grid-template-columns: [start] 3fr [col2] 1fr [col-end];
 	grid-gap: 10px;
-    grid-template-areas:
-            'field_title field_title'
-            'field button';
+	border-radius: 10px;
 }
 
-.reg__grid__field__title__block {grid-area: field_title;}
-.reg__grid__email__block {grid-area: field;}
-.reg__grid__button__block {grid-area: button;}
+.reg__field__grid {
+	display: grid;
+	gap: 10px;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 3fr [col2] 1fr [col-end];
+	grid-template-areas:
+			'title title'
+			'input button'
+			'status button';
+	padding: 10px;
+
+}
+.reg__from__elem {
+	background-color: #303030;
+	border-radius: 10px;
+}
+
+
+.field__title{grid-area: title;}
+.field__input{grid-area: input;}
+.field__button{grid-area: button;}
+.field__status{grid-area: status;}
+
+.reg__email__block {
+	z-index: 3;
+
+}
+
+.reg__password__block {
+	display: none;
+	z-index: 2;
+	transform: translateY(-100%);
+	animation: ani 1s forwards;
+	animation-delay: 1s;
+}
+
+.reg__username__block {
+	display: none;
+	z-index: 1;
+	transform: translateY(-100%);
+	animation: ani 1s forwards;
+	animation-delay: 1s;
+}
+
+
+@keyframes ani {
+	0% {transform: translateY(-100%);}
+	100% {transform: translateY(0);}
+}
+
+
+.reg__from__elem.active {display: block;}
+.reg__password__block:target{display: block}
+.reg__username__block:target{display: block}
+
+
+img.success__img{
+	height: 30px;
+	animation: 1s appearance;
+}
+
+@keyframes appearance {
+	0% {opacity: 0}
+	100% {opacity: 100%}
+}
+
+.hide {
+	display: none;
+}
+
+
+
 
 .form__field__title {
 	margin-left: 5px;
