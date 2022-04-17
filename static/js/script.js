@@ -33,18 +33,31 @@ $(document).ready(function () {
     input.on('change keyup', function () {
         if ($(this).val() !== '') {
             if ($(this).attr('id') === 'email') {
-                if (checkEmail($(this).val()) === true) {successField($(this))}
-                else {errorField($(this), 'Почта введена неверно!')}
+                if (checkEmail($(this).val()) !== true) {
+                    errorField($(this), 'Почта введена неверно!')
+                } else {
+                    successField($(this))
+                }
             }
 
             if ($(this).attr('id') === 'password') {
-                if (checkPassword($(this).val()) === true) {successField($(this))}
-                else {errorField($(this), 'Пароль слишком короткий (минимум 4 символа)!')}
+                if (checkPassword($(this).val()) !== true) {
+                    errorField($(this), 'Пароль слишком короткий (минимум 4 символа)!')
+                } else {
+                    successField($(this))
+                }
             }
 
             if ($(this).attr('id') === 'username') {
-                if (eel.check_username(value) === true) {errorField($(this), 'Пользователь уже существует!')}
-                else {successField($(this))}
+                jQuery.ajax({
+                    url: "do_check.php",
+                    data: { username: $(this).val()},
+                    type: "POST",
+                    success:function(data){
+                        $("#status").html(data);
+                    },
+                    error:function (){}
+                });
             }
         }
         else {emptyField($(this))}
@@ -99,13 +112,7 @@ $(document).ready(function () {
     }
 
     function checkUsername(value) {
-        async function send () {
-            await eel.check_username(value);
-            if (eel.check_username(value) === true) {
-                return true
-            }else {
-                return false
-            }
-        }
+        console.log('ok')
+
     }
 })
