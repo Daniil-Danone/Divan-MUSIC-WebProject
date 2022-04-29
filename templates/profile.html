@@ -5,6 +5,8 @@
         <div class="container">
             <div class="navigation__str">
                 Контент
+                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
             </div>
             <div class="profile__grid">
                 <div class="profile__grid__body">
@@ -13,7 +15,11 @@
                         <div class="posts__page__profile__grid">
                             {% if current_user.is_authenticated %}
                                 <div class="profile__avatar">
-                                    <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
+                                    {% if current_user.avatar_path %}
+                                        <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}" alt="oops">
+                                    {% endif %}
                                 </div>
                                 <div class="profile__info__username">{{ user.username }}</div>
                                 <div class="profile__info__username text__subtitle">{{ user.surname }} {{ user.name }}</div>
@@ -34,15 +40,71 @@
 <!--------------------------------------------------------------------------------------------------------------------->
                     <div class="profile__grid__item profile__grid__content">
                         {% if current_user.is_authenticated %}
-                            <div class="profile__info__username">{{ user.username }}</div>
+                            <form method="post" class="registration__form__start" novalidate enctype="multipart/form-data">
+                                <div class="profile__info__username">{{ user.username }}</div>
                                 <ul>
-                                    <li class="profile__info__item"><b>Почта:</b> {{ user.email }}</li>
-                                    <li class="profile__info__item"><b>Имя:</b> {{ user.name }}</li>
-                                    <li class="profile__info__item"><b>Фамилия:</b> {{ user.surname }}</li>
-                                    <li class="profile__info__item"><b>Возраст:</b> {{ user.age }}</li>
-                                    <li class="profile__info__item"><b>Пол:</b> {{ user.sex }}</li>
-                                    <li class="profile__info__item"><b>Хобби:</b> {{ user.hobby }}</li>
+                                    <li class="profile__info__item"><b>Почта:</b></li> <li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.email(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button"></div>
+                                    </div>
+
+                                    <li class="profile__info__item"><b>Имя:</b></li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.name(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button">
+                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                        </div>
+                                    </div>
+
+                                    <li class="profile__info__item"><b>Фамилия:</b></li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.surname(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button">
+                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                        </div>
+                                    </div>
+
+                                    <li class="profile__info__item"><b>Возраст:</b></li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.age(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button">
+                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                        </div>
+                                    </div>
+
+                                    <li class="profile__info__item"><b>Пол:</b></li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.sex(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button">
+                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                        </div>
+                                    </div>
+
+                                    <li class="profile__info__item"><b>Хобби:</b></li>
+                                    <div class="profile__info__item__grid">
+                                        <div class="profile__info__field">
+                                            {{ form.hobby(class="profile_info_field custom__input__field") }}
+                                        </div>
+                                        <div class="profile__edit__button">
+                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                        </div>
+                                    </div>
+                                    <li class="profile__info__item">
+                                        <button type="submit" class="form__submit" id="profile__save">Сохранить изменения</button>
+                                    </li>
                                 </ul>
+                            </form>
                         {% else %}
                             <div class="profile__info__username">Неизвестный пользователь</div>
                         {% endif %}

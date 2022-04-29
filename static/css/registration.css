@@ -79,17 +79,17 @@
 .reg__password__block {
 	display: none;
 	z-index: 2;
-	transform: translateY(-100%);
+	transform: translateY(-110%);
 	animation: ani 1s forwards;
-	animation-delay: 1s;
+	animation-delay: 0.2s;
 }
 
 .reg__username__block {
 	display: none;
 	z-index: 1;
-	transform: translateY(-100%);
+	transform: translateY(-110%);
 	animation: ani 1s forwards;
-	animation-delay: 1s;
+	animation-delay: 0.2s;
 }
 
 
@@ -116,9 +116,8 @@ img.success__img{
 
 .hide {
 	display: none;
+
 }
-
-
 
 
 .form__field__title {

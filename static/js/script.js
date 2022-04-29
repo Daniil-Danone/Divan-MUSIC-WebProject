@@ -25,12 +25,28 @@ $(document).ready(function () {
 $('.registration__form__start').find('.custom__input__field').attr('autocomplete', 'off');
 
 $(document).ready(function () {
-    let pattern = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i
+    let pattern = /^[a-z0-9._-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i
     let password_pattern = /^[a-z0-9_-]$/
     let input = $('.custom__input__field')
+    let profile_info = $('.profile_info_field')
+    let profile_edit = $('#profile__edit')
+    let profile_save = $('#profile__save')
+
+    profile_info.attr('disabled', true).addClass('unableToEdit')
+
+    profile_save.attr('disabled', true).addClass('hide')
+
+    profile_info.parents('.profile__info__item__grid').find('#profile__edit').click(function () {
+        profile_info.attr('disabled', true).addClass('unableToEdit')
+        profile_info.removeClass('field__error')
+        $(this).parents('.profile__info__item__grid').find('.custom__input__field').toggleClass('unableToEdit').attr('disabled', false).focus()
+    })
 
 
-    input.on('change keyup', function () {
+    input.on('change keyup', function validateField() {
+        profile_save.attr('disabled', false).removeClass('hide')
+
+
         if ($(this).val() !== '') {
             if ($(this).attr('id') === 'email') {
                 if (checkEmail($(this).val()) !== true) {
@@ -49,27 +65,26 @@ $(document).ready(function () {
             }
 
             if ($(this).attr('id') === 'username') {
-                jQuery.ajax({
-                    url: "do_check.php",
-                    data: { username: $(this).val()},
-                    type: "POST",
-                    success:function(data){
-                        $("#status").html(data);
-                    },
-                    error:function (){}
-                });
+                if($(this).val().length >= 4) {
+                    return successField($(this))
+                } else {
+                    errorField($(this), 'Никнейм слишком короткий (минимум 4 символа)!')
+                }
             }
+
+            else {successField($(this))}
         }
         else {emptyField($(this))}
 
         $(this).parents('.reg__field__grid').find("#form__continue").click(function () {
             $(this).parents('.reg__from__elem').addClass('active')
+            console.log('ok')
         })
     })
 
 
     function checkEmail(email) {
-        if (email !== '') {
+        if (email !== ''){
             return email.search(pattern) === 0;
         } else {
             return false
@@ -109,10 +124,5 @@ $(document).ready(function () {
         field.parents('.reg__field__grid').find("#status").text('Поле не должно быть пустым')
             .removeClass('field__success').addClass('field__error');
         field.removeClass('field__success').addClass('field__error');
-    }
-
-    function checkUsername(value) {
-        console.log('ok')
-
     }
 })

@@ -3,7 +3,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired, Length
 
 
-class StartRegistrationForm(FlaskForm):
+class RegistrationForm(FlaskForm):
     email = StringField('Почта', validators=[DataRequired(message='Это поле должно быть заполнено!')],
                         name='email',
                         id='email',

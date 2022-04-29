@@ -26,6 +26,19 @@
 .profile__grid__content {grid-area: content; background-color: #303030; border-radius: 10px;}
 .profile__grid__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
 
+
+.profile__info__item__grid {
+	display: grid;
+	grid-gap: 10px;
+	grid-template-rows: [start] auto [row-end];
+	grid-template-columns: [start] 6fr [col2] 1fr [col-end];
+	grid-template-areas:
+			"field button";
+}
+
+.profile__info__field {grid-area: field;}
+.profile__edit__button {grid-area: button;}
+
 /**/
 /**/
 
@@ -51,3 +64,4 @@
 .profile__logout {
 	grid-area: logout;
 }
+

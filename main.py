@@ -14,10 +14,11 @@ from static.data.products import Product
 from static.forms.post_form import PostForm
 from static.forms.login_form import LoginForm
 from static.forms.product_form import ProductForm
-from static.forms.start_registration import StartRegistrationForm
+from static.forms.start_registration import RegistrationForm
+from static.forms.profile_form import ProfileForm
 from static.forms.registration_form import RegistrationForm
 
-from flask import Flask, render_template, redirect, make_response, jsonify, request
+from flask import Flask, render_template, redirect, make_response, jsonify, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 
@@ -79,19 +80,24 @@ def index():
 @app.route('/registration', methods=['POST', 'GET'])
 def start_registration():
     db_sess = db_session.create_session()
-    form = StartRegistrationForm()
+    form = RegistrationForm()
     user = User()
     if form.validate_on_submit():
         if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('registration.html',
+            print('Проверка фейл')
+            return render_template('registration_start.html',
                                    title='Регистрация',
                                    form=form,
-                                   message="Пользователь с данной почтой уже зарегистрирован в системе")
+                                   email_error='Почта занята!')
         else:
+            print("Проверка саксес")
             user.email = form.email.data
+            user.username = form.username.data
+            user.hashed_password = form.password.data
+            user.set_password(form.password.data)
             db_sess.add(user)
             db_sess.commit()
-            return "Success"
+        return "Success"
 
     return render_template('registration_start.html',
                            title='Регистрация',
@@ -136,6 +142,7 @@ def registration():
                            title='Регистрация',
                            form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -143,10 +150,43 @@ def logout():
     return redirect("/")
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['POST', 'GET'])
 def profile():
+    form = ProfileForm()
+
+    if request.method == "GET":
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == current_user.email).first()
+
+        form.email.data = user.email
+        form.name.data = user.name
+        form.surname.data = user.surname
+        form.age.data = user.age
+        form.sex.data = user.sex
+        form.hobby.data = user.hobby
+
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == current_user.email).first()
+        if user:
+            user.email = form.email.data
+            user.name = form.name.data
+            user.surname = form.surname.data
+            user.age = form.age.data
+            user.sex = form.sex.data
+            user.hobby = form.hobby.data
+            db_sess.commit()
+            return render_template('profile.html',
+                                   user=current_user,
+                                   form=form,
+                                   title=f'{current_user.username} - DIVAN music',
+                                   image=f'/img/avatars/{current_user.email}.png')
+        else:
+            abort(404)
+
     return render_template('profile.html',
                            user=current_user,
+                           form=form,
                            title=f'{current_user.username} - DIVAN music',
                            image=f'/img/avatars/{current_user.email}.png')
 
@@ -373,10 +413,12 @@ def crop_max_square(pil_img):
 
 
 @eel.expose
-def check_username(username):
+def check_email(email):
+    print('ok')
     db_sess = db_session.create_session()
-    if db_sess.query(User).filter(User.email == username).first():
-        return False
+    if db_sess.query(User).filter(User.email == email).first():
+        return True
+    return False
 
 
 if __name__ == '__main__':
