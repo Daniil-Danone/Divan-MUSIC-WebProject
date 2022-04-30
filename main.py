@@ -359,14 +359,16 @@ def add_product():
         if product_form.content.data:
             file = product_form.content.data
             filename = secure_filename(product_form.content.data.filename)
-            file.save(filename)
+            file.save(f'static/products/documents/{filename}')
+            filepath = f'static/products/documents/{filename}'
+            product.local_path = f'/static/products/documents/{filename}'
             if filename.split('.')[-1] == 'pdf':
                 product.icon_file = '/img/icons/pdf3.png'
                 zoom_x = 2.0
                 zoom_y = 2.0
                 mat = fitz.Matrix(zoom_x, zoom_y)
                 try:
-                    doc = fitz.open(filename)
+                    doc = fitz.open(filepath)
                     for page in doc:
                         pix = page.get_pixmap(matrix=mat)
                         pix.save(f"static/img/products/preview/{filename.replace('.pdf', '')}_preview.png")
@@ -392,7 +394,7 @@ def add_product():
             if not disk.exists(f"/Site-products/{current_user.email}"):
                 disk.mkdir(f"/Site-products/{current_user.email}")
             if not disk.exists(f"/Site-products/{current_user.email}/{filename}"):
-                disk.upload(filename, f"/Site-products/{current_user.email}/{filename}")
+                disk.upload(filepath, f"/Site-products/{current_user.email}/{filename}")
                 product.path = f"/Site-products/{current_user.email}/{filename}"
                 product.content = filename
             else:
@@ -401,9 +403,10 @@ def add_product():
                                    str(random.randrange(0, 9999)) + '.' + filename.split('.')[-1]
                     if not disk.exists(f"/Site-products/{current_user.email}/{new_filename}"):
                         break
-                disk.upload(filename, f"/Site-products/{current_user.email}/{new_filename}")
+                disk.upload(filepath, f"/Site-products/{current_user.email}/{new_filename}")
                 product.path = f"/Site-products/{current_user.email}/{new_filename}"
                 product.content = new_filename
+
         else:
             error = 'Вы должны добавить продукт (ноты)'
 
