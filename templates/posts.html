@@ -29,7 +29,7 @@
                                     {% if current_user.avatar_path %}
                                         <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
                                     {% else %}
-                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}" alt="oops">
+                                        <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
                                     {% endif %}
                                 </div>
                                 <div class="profile__info">
@@ -86,15 +86,22 @@
                         {% for post in posts %}
                             <div class="post__card">
                                 <div class="post__creator">
-                                    <div class="creator__avatar">
-                                        {% if current_user.avatar_path %}
-                                        <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
-                                    {% else %}
-                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}" alt="oops">
-                                    {% endif %}
+                                    <div class="post__creator__block">
+                                        <div class="creator__avatar">
+                                            {% if post.creator_avatar_path %}
+                                            <img src="{{ url_for('static', filename=post.creator_avatar_path) }}" alt="oops">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
+                                        {% endif %}
+                                        </div>
+                                        <div class="creator__username">
+                                            {{ post.creator }}
+                                        </div>
                                     </div>
-                                    <div class="creator__username">
-                                        {{ post.creator }}
+                                    <div class="posts__tools__buttons">
+                                        {% if current_user.username == post.creator %}
+                                            <a href="/posts/delete/{{ post.id }}" id="delete__post"><img src="../static/img/icons/trash.png" alt=""></a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="post__header">
@@ -114,6 +121,11 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        {% if is_there_posts %}
+                            <div class="no_posts">
+                                Нет данных
+                            </div>
+                        {% endif %}
                     </div>
 <!--------------------------------------------------------------------------------------------------------------------->
                     <div class="posts__grid__item posts__page__border1">

@@ -9,121 +9,145 @@
                 {{ form.csrf_token }}
             </div>
             <div class="profile__grid">
-                <div class="profile__grid__body">
+                <form method="post" class="registration__form__start" novalidate enctype="multipart/form-data">
+                    <div class="profile__grid__body">
 <!--------------------------------------------------------------------------------------------------------------------->
-                    <div class="profile__grid__item profile__grid__avatar">
-                        <div class="posts__page__profile__grid">
-                            {% if current_user.is_authenticated %}
-                                <div class="profile__avatar">
-                                    {% if current_user.avatar_path %}
-                                        <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
-                                    {% else %}
-                                        <img src="{{ url_for('static', filename='/img/avatars/no_avatar.png') }}" alt="oops">
-                                    {% endif %}
-                                </div>
-                                <div class="profile__info__username">{{ user.username }}</div>
-                                <div class="profile__info__username text__subtitle">{{ user.surname }} {{ user.name }}</div>
-                            {% else %}
-                                <div class="profile__avatar">
-                                    <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
-                                </div>
-                                <div class="profile__info__username">
-                                    Unknown user
-                                </div>
-                                <div class="text__subtitle">
-                                    Чтобы открыть для себя весь функционал сайта, пожалуйста,
-                                     <a href="/login" class="inline__link">войдите</a> в систему
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-<!--------------------------------------------------------------------------------------------------------------------->
-                    <div class="profile__grid__item profile__grid__content">
-                        {% if current_user.is_authenticated %}
-                            <form method="post" class="registration__form__start" novalidate enctype="multipart/form-data">
-                                <div class="profile__info__username">{{ user.username }}</div>
-                                <ul>
-                                    <li class="profile__info__item"><b>Почта:</b></li> <li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.email(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button"></div>
-                                    </div>
-
-                                    <li class="profile__info__item"><b>Имя:</b></li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.name(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button">
-                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
-                                        </div>
-                                    </div>
-
-                                    <li class="profile__info__item"><b>Фамилия:</b></li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.surname(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button">
-                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
-                                        </div>
-                                    </div>
-
-                                    <li class="profile__info__item"><b>Возраст:</b></li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.age(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button">
-                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
-                                        </div>
-                                    </div>
-
-                                    <li class="profile__info__item"><b>Пол:</b></li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.sex(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button">
-                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
-                                        </div>
-                                    </div>
-
-                                    <li class="profile__info__item"><b>Хобби:</b></li>
-                                    <div class="profile__info__item__grid">
-                                        <div class="profile__info__field">
-                                            {{ form.hobby(class="profile_info_field custom__input__field") }}
-                                        </div>
-                                        <div class="profile__edit__button">
-                                            <button type="button" class="form__submit" id="profile__edit">Изменить</button>
-                                        </div>
-                                    </div>
-                                    <li class="profile__info__item">
-                                        <button type="submit" class="form__submit" id="profile__save">Сохранить изменения</button>
-                                    </li>
-                                </ul>
-                            </form>
-                        {% else %}
-                            <div class="profile__info__username">Неизвестный пользователь</div>
-                        {% endif %}
-                    </div>
-<!--------------------------------------------------------------------------------------------------------------------->
-                    <div class="profile__grid__item profile__grid__right__border">
-                        <div class="profile__settings__grid">
-                            <div class="profile__settings__item profile__settings__title">
-                                Настройки
-                            </div>
-                            <div class="profile__settings__item profile__logout">
+                        <div class="profile__grid__item profile__grid__avatar">
+                            <div class="posts__page__profile__grid">
                                 {% if current_user.is_authenticated %}
-                                    <a href="/logout" class="logout__link">ВЫЙТИ ИЗ АККАУНТА</a>
+                                    <div class="profile__avatar">
+                                        {% if current_user.avatar_path %}
+                                            <img src="{{ url_for('static', filename=current_user.avatar_path) }}" alt="oops">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
+                                        {% endif %}
+                                    </div>
+                                    <div class="profile__info__username">{{ user.username }}</div>
+                                    <div class="profile__info__username text__subtitle">{{ user.surname }} {{ user.name }}</div>
+                                    {{ form.avatar(class="custom__input__field custom__file__button") }}
+                                    {% for error in form.errors.avatar %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="profile__avatar">
+                                        <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
+                                    </div>
+                                    <div class="profile__info__username">
+                                        Unknown user
+                                    </div>
+                                    <div class="text__subtitle">
+                                        Чтобы открыть для себя весь функционал сайта, пожалуйста,
+                                         <a href="/login" class="inline__link">войдите</a> в систему
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
-                    </div>
 <!--------------------------------------------------------------------------------------------------------------------->
-                </div>
+                        <div class="profile__grid__item profile__grid__content">
+                            {% if current_user.is_authenticated %}
+                                <div class="profile__info__username">{{ user.username }}</div>
+                                    <div class="profile__info__grid">
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__email">
+                                            <b>Почта:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.email(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button"></div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__name">
+                                            <b>Имя:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.name(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button">
+                                                    <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__surname">
+                                            <b>Фамилия:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.surname(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button">
+                                                    <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__age">
+                                            <b>Возраст:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.age(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button">
+                                                    <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__gender">
+                                            <b>Пол:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.sex(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button">
+                                                    <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__hobby">
+                                            <b>Хобби:</b>
+                                            <div class="profile__info__item__grid">
+                                                <div class="profile__info__field">
+                                                {{ form.hobby(class="profile_info_field custom__input__field unableToEdit") }}
+                                                </div>
+                                                <div class="profile__edit__button">
+                                                    <button type="button" class="form__submit" id="profile__edit">Изменить</button>
+                                                </div>
+                                            </div>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                        <div class="profile__info__item profile__submit">
+                                            <a href="#update">
+                                                {{ form.submit_btn(type="submit", class="form__submit") }}
+                                            </a>
+                                        </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                    </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                    {% else %}
+                                        <div class="profile__info__username">Неизвестный пользователь</div>
+                                    {% endif %}
+                                </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                                <div class="profile__grid__item profile__grid__right__border">
+                                    <div class="profile__settings__grid">
+                                        <div class="profile__settings__item profile__settings__title">
+                                            Настройки
+                                        </div>
+                                        <div class="profile__settings__item profile__logout">
+                                            {% if current_user.is_authenticated %}
+                                                <a href="/logout" class="logout__link">ВЫЙТИ ИЗ АККАУНТА</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+<!--------------------------------------------------------------------------------------------------------------------->
+                    </div>
+                </form>
             </div>
         </div>
     </div>

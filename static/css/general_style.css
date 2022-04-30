@@ -516,21 +516,26 @@ input[type=file]::file-selector-button {
 	padding: 7px;
 	border: 1px solid #5680E9;
 	border-radius: 5px;
+	cursor: pointer;
 	background-color: transparent;
 	transition: 0.4s ease-in-out;
 }
 
-#profile__save.hide {
-	transform: scale(0);
+#profile__save {
+	animation: 1s appearance;
 }
 
 #profile__save {
-	transform: scale(1);
+	transform: translateY(0px);
+}
+
+@keyframes appearance {
+	0% {opacity: 0}
+	100% {opacity: 100%}
 }
 
 .form__submit:hover{
 	background-color: #5680E9;
-
 }
 
 .custom__checkbox {
@@ -651,15 +656,21 @@ input[type=file]::file-selector-button {
 .profile__info__username {
 	width: 100%;
 	font-size: 20px;
-	margin: 0 0 auto;
+	margin: 0 0 10px 0;
 }
 
 .profile__info__item {
-	margin: 10px 0;
-	padding: 5px;
-	border-bottom: 2px solid #454545;
+	display: grid;
+	grid-column: 1;
+	grid-row: auto;
+	grid-gap: 5px;
+	margin-bottom: 5px;
+	padding: 0 10px;
 }
 
+.profile__info__item b {
+	padding-left: 5px;
+}
 
 .logout__link {
 	display: block;
@@ -802,6 +813,10 @@ input[type=file]::file-selector-button {
 .error{
 	color: #C3073F;
 	margin-bottom: 10px;
+}
+
+.hide {
+	display: none;
 }
 
 @font-face {

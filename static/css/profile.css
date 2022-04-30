@@ -13,7 +13,7 @@
 	grid-gap: 10px;
 	grid-template-areas:
 			"avatar content right__border"
-			"avatar content right__border";
+			"left__border content right__border";
 }
 
 .profile__grid__item {
@@ -25,6 +25,14 @@
 .profile__grid__avatar {grid-area: avatar; background-color: #303030; border-radius: 10px;}
 .profile__grid__content {grid-area: content; background-color: #303030; border-radius: 10px;}
 .profile__grid__right__border {grid-area: right__border; background-color: #303030; border-radius: 10px;}
+.profile__grid__left__border {grid-area: left__border;}
+
+.profile__info__grid {
+	display: grid;
+	grid-gap: 10px;
+	grid-row: 1;
+	grid-column: auto;
+}
 
 
 .profile__info__item__grid {
@@ -41,6 +49,13 @@
 
 /**/
 /**/
+
+.profile__page__profile__grid {
+	display: grid;
+	grid-template-rows: [start] auto [row2] auto [row3] auto [row-end];
+	grid-template-columns: [col-start] 1fr [col-end];
+	gap: 10px;
+}
 
 /*Сетка настроек аккаунта*/
 

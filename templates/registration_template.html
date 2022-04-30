@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <div class="container">
+            <div class="navigation__str">
+                Контент
+            </div>
+            <form method="post" novalidate enctype="multipart/form-data">
+                <div class="reg__grid">
+                    <div class="reg__grid__body">
+                        <div class="reg__grid__item reg__grid__title__block">
+                                <div>
+                                    {{ form.hidden_tag() }}
+                                    {{ form.csrf_token }}
+                                </div>
+                                <div class="reg__grid__form__title">
+                                    Регистрация пользователя
+                                </div>
+                            </div>
+                        <div class="reg__grid__item reg__grid__form__block">
+                            <div class="reg__form__content__grid">
+                                <div class="reg__grid__form__grid__item reg__grid__nickname__block">
+                                    <label>Никнейм<font color="red">*</font></label>
+                                    <p>{{ form.username(class="custom__input__field") }}
+                                        {% for error in form.errors.username %}
+                                            <small class="form-text text-muted ">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__email__block">
+                                    <label>Почта<font color="red">*</font></label>
+                                    {{ form.email(class="custom__input__field") }}
+                                    {% for error in form.errors.email %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                    {% if email_exist %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ email_exist }}</font>
+                                        </small>
+                                    {% endif %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__password__block">
+                                    <label>Пароль<font color="red">*</font></label>
+                                    {{ form.password(class="custom__input__field") }}
+                                    {% for error in form.errors.password %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__name__block">
+                                    <label>Имя</label>
+                                    {{ form.name(class="custom__input__field") }}
+                                    {% for error in form.errors.name %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__surname__block">
+                                    <label>Фамилия</label>
+                                    {{ form.surname(class="custom__input__field") }}
+                                    {% for error in form.errors.surname %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__age__block">
+                                    <label>Возраст<font color="red">*</font></label>
+                                    {{ form.age(class="custom__input__field") }}
+                                    {% for error in form.errors.age %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__sex__block">
+                                    <div class="custom__radio__buttons">
+                                        <label>Пол<font color="red">*</font></label>
+                                        <div class="custom__radio__button__item">
+                                            <input type="radio" value="Мужской" checked name="sex" id="men">
+                                            <label for="men">Мужской</label>
+                                        </div>
+                                        <div class="custom__radio__button__item">
+                                            <input type="radio" value="Женский" name="sex" id="women">
+                                            <label for="women">Женский</label>
+                                        </div>
+                                        <small>
+                                            {{ sex_error }}
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__hobby__block">
+                                    <label>Хобби</label>
+                                    {{ form.hobby(class="custom__input__field") }}
+                                    {% for error in form.errors.hobby %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__avatar__block">
+                                    <label>Выберите аватар</label>
+                                    {{ form.avatar(class="custom__input__field custom__file__button") }}
+                                    {% for error in form.errors.avatar %}
+                                        <small class="form-text text-muted ">
+                                            <font color="red">{{ ''.join(error) }}</font>
+                                        </small>
+                                    {% endfor %}
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__accept__block">
+                                    <div class="custom__checkbox accept__checkbox">
+                                        {{ form.accept }}
+                                        {% for error in form.errors.accept %}
+                                            <small class="form-text text-muted ">
+                                                <font color="red">{{ ''.join(error) }}</font>
+                                            </small>
+                                        {% endfor %}
+                                        <label class="custom__checkbox__label" for="accept__checkbox">
+                                            Согласие на обработку персональных данных<font color="red">*</font>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="reg__grid__form__grid__item reg__grid__button__block">
+                                    <button type="submit" class="form__submit">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reg__grid__item reg__grid__left__border">
+                            Ничего
+                        </div>
+                        <div class="reg__grid__item reg__grid__right__border">
+                            Ничего
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -19,4 +19,4 @@ class RegistrationForm(FlaskForm):
     username = StringField('Ник', validators=[DataRequired(message='Это поле должно быть заполнено!')],
                            name='username',
                            id='username',
-                           render_kw={"placeholder": "Придумайте никнейм..."},)
+                           render_kw={"placeholder": "Придумайте никнейм..."})

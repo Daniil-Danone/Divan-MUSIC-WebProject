@@ -18,3 +18,4 @@ class LoginForm(FlaskForm):
 
     remember_me = BooleanField('Запомнить меня',
                                id='custom__checkbox')
+

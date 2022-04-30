@@ -1,10 +1,10 @@
 import os
-import eel
 import random
 import fitz
 import yadisk
 import datetime
 import requests
+import asyncio
 from PIL import Image
 from flask_login import LoginManager
 from static.data import db_session
@@ -16,7 +16,6 @@ from static.forms.login_form import LoginForm
 from static.forms.product_form import ProductForm
 from static.forms.start_registration import RegistrationForm
 from static.forms.profile_form import ProfileForm
-from static.forms.registration_form import RegistrationForm
 
 from flask import Flask, render_template, redirect, make_response, jsonify, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
@@ -78,14 +77,13 @@ def index():
 
 
 @app.route('/registration', methods=['POST', 'GET'])
-def start_registration():
-    db_sess = db_session.create_session()
+def registration():
     form = RegistrationForm()
     user = User()
     if form.validate_on_submit():
+        db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
-            print('Проверка фейл')
-            return render_template('registration_start.html',
+            return render_template('registration.html',
                                    title='Регистрация',
                                    form=form,
                                    email_error='Почта занята!')
@@ -93,54 +91,64 @@ def start_registration():
             print("Проверка саксес")
             user.email = form.email.data
             user.username = form.username.data
-            user.hashed_password = form.password.data
             user.set_password(form.password.data)
-            db_sess.add(user)
-            db_sess.commit()
-        return "Success"
-
-    return render_template('registration_start.html',
-                           title='Регистрация',
-                           form=form)
-
-
-def registration():
-    db_sess = db_session.create_session()
-    form = RegistrationForm()
-    user = User()
-    if form.validate_on_submit():
-        if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('registration.html',
-                                   title='Регистрация',
-                                   form=form,
-                                   message="Пользователь с данной почтой уже зарегистрирован в системе")
-        else:
             user.username = form.username.data
-            user.email = form.email.data
-            user.hashed_password = form.password.data
-            user.set_password(form.password.data)
-            user.name = form.name.data
-            user.surname = form.surname.data
-            user.sex = form.sex.data
-            user.age = str(form.age.data)
-            user.hobby = form.hobby.data
             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
-            if form.avatar.data != '':
-                img = form.avatar.data
-                filename = f'{form.email.data}.png'
-                img.save(filename)
-                image = Image.open(filename)
-                out_img = crop_max_square(image)
-                out_img.save(f"static/img/avatars/{form.email.data}.png")
-                user.avatar_path = f"/img/avatars/{form.email.data}.png"
-                os.remove(filename)
+
+            user.posts = 0
+            user.name = ''
+            user.surname = ''
+            user.sex = ''
+            user.age = ''
+            user.hobby = ''
+
             db_sess.add(user)
             db_sess.commit()
             login_user(user)
-            return redirect('/')
+        return redirect('/')
+
     return render_template('registration.html',
                            title='Регистрация',
                            form=form)
+
+
+# def registration():
+#     db_sess = db_session.create_session()
+#     form = RegistrationForm()
+#     user = User()
+#     if form.validate_on_submit():
+#         if db_sess.query(User).filter(User.email == form.email.data).first():
+#             return render_template('registration_template.html',
+#                                    title='Регистрация',
+#                                    form=form,
+#                                    message="Пользователь с данной почтой уже зарегистрирован в системе")
+#         else:
+#             user.username = form.username.data
+#             user.email = form.email.data
+#             user.hashed_password = form.password.data
+#             user.set_password(form.password.data)
+#             user.name = form.name.data
+#             user.surname = form.surname.data
+#             user.sex = form.sex.data
+#             user.age = str(form.age.data)
+#             user.hobby = form.hobby.data
+#             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
+#             if form.avatar.data != '':
+#                 img = form.avatar.data
+#                 filename = f'{form.email.data}.png'
+#                 img.save(filename)
+#                 image = Image.open(filename)
+#                 out_img = crop_max_square(image)
+#                 out_img.save(f"static/img/avatars/{form.email.data}.png")
+#                 user.avatar_path = f"/img/avatars/{form.email.data}.png"
+#                 os.remove(filename)
+#             db_sess.add(user)
+#             db_sess.commit()
+#             login_user(user)
+#             return redirect('/')
+#     return render_template('registration_template.html',
+#                            title='Регистрация',
+#                            form=form)
 
 
 @app.route('/logout')
@@ -151,36 +159,48 @@ def logout():
 
 
 @app.route('/profile', methods=['POST', 'GET'])
+@login_required
 def profile():
     form = ProfileForm()
 
-    if request.method == "GET":
+    if request.method == 'GET':
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == current_user.email).first()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
 
-        form.email.data = user.email
-        form.name.data = user.name
-        form.surname.data = user.surname
-        form.age.data = user.age
-        form.sex.data = user.sex
-        form.hobby.data = user.hobby
-
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == current_user.email).first()
         if user:
-            user.email = form.email.data
+            form.email.data = user.email
+            form.name.data = user.name
+            form.surname.data = user.surname
+            form.age.data = user.age
+            form.sex.data = user.sex
+            form.hobby.data = user.hobby
+        else:
+            abort(404)
+
+    if request.method == 'POST':
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        if user:
             user.name = form.name.data
             user.surname = form.surname.data
             user.age = form.age.data
             user.sex = form.sex.data
             user.hobby = form.hobby.data
+
+            if form.avatar.data is not None:
+                img = form.avatar.data
+                filename = f'{form.email.data}.png'
+                img.save(filename)
+                image = Image.open(filename)
+                out_img = crop_max_square(image)
+                out_img.save(f"static/img/avatars/{form.email.data}.png")
+                user.avatar_path = f"/img/avatars/{form.email.data}.png"
+                try:
+                    os.replace(filename, 'static/img/avatars')
+                except:
+                    pass
             db_sess.commit()
-            return render_template('profile.html',
-                                   user=current_user,
-                                   form=form,
-                                   title=f'{current_user.username} - DIVAN music',
-                                   image=f'/img/avatars/{current_user.email}.png')
+            return redirect('/profile')
         else:
             abort(404)
 
@@ -194,10 +214,11 @@ def profile():
 @login_required
 @app.route('/add_post', methods=['POST', 'GET'])
 def add_post():
+    db_sess = db_session.create_session()
     post_form = PostForm()
     post = Post()
+    user = db_sess.query(User).filter(User.email == current_user.email).first()
     if post_form.validate_on_submit():
-        db_sess = db_session.create_session()
         post.title = post_form.title.data
         post.description = post_form.description.data
         post.theme = post_form.theme.data
@@ -208,16 +229,15 @@ def add_post():
                 img = post_form.content.data
                 img.save(f"static/img/post_img/{current_user.username}_{current_user.posts}.png")
                 post.path = f'/img/post_img/{current_user.username}_{current_user.posts}.png'
-                current_user.posts = current_user.posts + 1
+                user.posts = user.posts + 1
             except Exception as ex:
                 print(ex)
                 pass
         post.creator_avatar_path = current_user.avatar_path
         post.creator = current_user.username
         db_sess.add(post)
-        db_sess.merge(current_user)
         db_sess.commit()
-        return redirect('/')
+        return redirect('/posts')
 
     return render_template('add_post.html',
                            user=current_user,
@@ -229,10 +249,15 @@ def add_post():
 @app.route('/posts')
 def posts():
     db_sess = db_session.create_session()
-    posts = db_sess.query(Post).all()
-    posts.reverse()
+    posts_list = db_sess.query(Post).all()
+    posts_list.reverse()
 
     nav_path = [['/', 'Главная'], ['/posts', 'Новости']]
+
+    if len(posts_list) == 0:
+        is_there_posts = True
+    else:
+        is_there_posts = None
 
     if current_user.is_authenticated:
         image = current_user.email
@@ -245,9 +270,22 @@ def posts():
                            user=current_user,
                            title=f'Создание записи - DIVAN music',
                            image=f'/img/avatars/{image}.png',
-                           posts=posts,
+                           posts=posts_list,
                            nav_path=nav_path,
-                           form=log_form)
+                           form=log_form,
+                           is_there_posts=is_there_posts)
+
+
+@app.route('/posts/delete/<int:post_id>')
+def post_delete(post_id):
+    db_sess = db_session.create_session()
+    post = db_sess.query(Post).filter(Post.id == post_id).first()
+    if post:
+        db_sess.delete(post)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/posts')
 
 
 @app.route('/marketplace')
@@ -412,13 +450,8 @@ def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 
-@eel.expose
-def check_email(email):
-    print('ok')
-    db_sess = db_session.create_session()
-    if db_sess.query(User).filter(User.email == email).first():
-        return True
-    return False
+def delete_image(path):
+    os.remove(path)
 
 
 if __name__ == '__main__':

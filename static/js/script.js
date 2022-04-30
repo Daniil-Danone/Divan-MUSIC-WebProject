@@ -32,14 +32,14 @@ $(document).ready(function () {
     let profile_edit = $('#profile__edit')
     let profile_save = $('#profile__save')
 
-    profile_info.attr('disabled', true).addClass('unableToEdit')
+    profile_info.attr('readOnly', true).addClass('unableToEdit')
 
-    profile_save.attr('disabled', true).addClass('hide')
+    profile_save.attr('readOnly', true).addClass('hide')
 
     profile_info.parents('.profile__info__item__grid').find('#profile__edit').click(function () {
-        profile_info.attr('disabled', true).addClass('unableToEdit')
+        profile_info.attr('readOnly', true).addClass('unableToEdit')
         profile_info.removeClass('field__error')
-        $(this).parents('.profile__info__item__grid').find('.custom__input__field').toggleClass('unableToEdit').attr('disabled', false).focus()
+        $(this).parents('.profile__info__item__grid').find('.custom__input__field').toggleClass('unableToEdit').attr('readOnly', false).focus()
     })
 
 
@@ -72,7 +72,9 @@ $(document).ready(function () {
                 }
             }
 
-            else {successField($(this))}
+            else {
+                successField($(this))
+            }
         }
         else {emptyField($(this))}
 
