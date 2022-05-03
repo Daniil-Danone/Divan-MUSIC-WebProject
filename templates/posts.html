@@ -88,18 +88,22 @@
                                 <div class="post__creator">
                                     <div class="post__creator__block">
                                         <div class="creator__avatar">
-                                            {% if post.creator_avatar_path %}
-                                            <img src="{{ url_for('static', filename=post.creator_avatar_path) }}" alt="oops">
-                                        {% else %}
-                                            <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
-                                        {% endif %}
+                                            <a href="/profile/{{ post.creator.id }}" title="Профиль пользователя {{ post.creator.username }}">
+                                                {% if post.creator.avatar_path %}
+                                                    <img src="{{ url_for('static', filename=post.creator.avatar_path) }}" alt="oops">
+                                                {% else %}
+                                                    <img src="{{ url_for('static', filename='/img/avatars/anonym.png') }}" alt="oops">
+                                                {% endif %}
+                                            </a>
                                         </div>
                                         <div class="creator__username">
-                                            {{ post.creator }}
+                                            <a href="/profile/{{ post.creator.id }}" title="Профиль пользователя {{ post.creator.username }}">
+                                                {{ post.creator.username }}
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="posts__tools__buttons">
-                                        {% if current_user.username == post.creator %}
+                                        {% if current_user.email == post.creator.email %}
                                             <a href="/posts/delete/{{ post.id }}" id="delete__post"><img src="../static/img/icons/trash.png" alt=""></a>
                                         {% endif %}
                                     </div>

@@ -88,8 +88,7 @@
 	display: none;
 	z-index: 1;
 	transform: translateY(-110%);
-	animation: ani 1s forwards;
-	animation-delay: 0.2s;
+	animation: ani forwards;
 }
 
 
@@ -99,9 +98,16 @@
 }
 
 
-.reg__from__elem.active {display: block;}
-.reg__password__block:target{display: block}
-.reg__username__block:target{display: block}
+.reg__from__elem.active {
+	animation-delay: 0.2s;
+	animation-duration: 1s;
+	display: block;
+}
+
+.reg__from__elem.error__active {
+	animation-duration: 0s;
+	display: block;
+}
 
 
 img.success__img{

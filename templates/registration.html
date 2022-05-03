@@ -20,7 +20,7 @@
                         </div>
                         <div class="reg__grid__item reg__grid__form__block">
                             <div class="reg__form__content__grid">
-                                <div class="reg__from__elem reg__email__block">
+                                <div class="reg__from__elem reg__email__block {{ active }}">
                                     <div class="reg__field__grid">
                                         <div class="reg_field field__title">
                                             <label class="form__field__title">Почта<font color="red">*</font></label>
@@ -32,19 +32,19 @@
 
                                         <div class="reg_field field__button">
                                             <a href="#stage2">
-                                                <button type="button" id="form__continue" class="form__submit disabled" disabled>Продолжить</button>
+                                                <button type="button" id="form__continue" class="form__submit disabled button1" disabled>Продолжить</button>
                                             </a>
                                             <img id="success__img" src="../static/img/icons/ok_64px.png" alt=""
                                                  class="success__img hide">
                                         </div>
 
                                         <div class="reg_field field__status">
-                                            <span id="status">{{ email_error }}</span>
+                                            <span id="status" class="{{ error }}">{{ email_error }}</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="reg__from__elem reg__password__block" id="stage2">
+                                <div class="reg__from__elem reg__password__block {{ active }}" id="stage2">
                                     <div class="reg__field__grid">
                                         <div class="reg_field field__title">
                                             <label class="form__field__title">Пароль<font color="red">*</font></label>
@@ -56,7 +56,7 @@
 
                                         <div class="reg_field field__button">
                                             <a href="#stage3">
-                                                <button type="button" id="form__continue" class="form__submit disabled" disabled>Продолжить</button>
+                                                <button type="button" id="form__continue" class="form__submit disabled button2" disabled>Продолжить</button>
                                             </a>
                                             <img id="success__img" src="../static/img/icons/ok_64px.png" alt=""
                                                  class="success__img hide">
@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
 
-                                <div class="reg__from__elem reg__username__block" id="stage3">
+                                <div class="reg__from__elem reg__username__block {{ active }}" id="stage3">
                                     <div class="reg__field__grid">
                                         <div class="reg_field field__title">
                                             <label class="form__field__title">Никнейм<font color="red">*</font></label>

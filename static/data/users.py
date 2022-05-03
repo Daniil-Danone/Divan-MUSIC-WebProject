@@ -1,6 +1,7 @@
 import sqlalchemy
 from flask_login import UserMixin
 from .db_session import SqlAlchemyBase
+from sqlalchemy import orm
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -17,9 +18,13 @@ class User(SqlAlchemyBase, UserMixin):
     age = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hobby = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    posts = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    posts_count = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     avatar_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     created_date = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
+    posts = orm.relationship('Post')
+
+    products = orm.relationship('Product')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

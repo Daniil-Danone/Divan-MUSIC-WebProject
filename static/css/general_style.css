@@ -496,8 +496,13 @@ input.field__error{
 
 .custom__file__button {
 	padding: 0;
+
 }
 
+input[type=file] {
+	content: '';
+	cursor: pointer;
+}
 
 input[type=file]::file-selector-button {
 	outline: none;
@@ -508,6 +513,11 @@ input[type=file]::file-selector-button {
 	height: 100%;
 	margin-left: -5px;
 	cursor: pointer;
+}
+
+input[type=file].profile {
+	font-size: 10px;
+	height: 25px;
 }
 
 .form__submit{
@@ -586,14 +596,20 @@ input[type=file]::file-selector-button {
 	display: none;
 }
 
+.custom__radio__buttons.disabled {
+	pointer-events: none;
+}
+
 .custom__radio__button__item {
 	height: 30px;
 	position: relative;
 	padding: 0 0 0 50px;
+	cursor: pointer;
 }
 
 .custom__radio__button__item label{
 	line-height: 30px;
+	cursor: pointer;
 }
 
 .custom__radio__button__item input {

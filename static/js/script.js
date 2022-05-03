@@ -14,23 +14,33 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.custom__radio__button__item', function() {
-        $(this).parents('.custom__radio__buttons').find('.custom__radio__button__item').removeClass('active');
+        $(this).parents('.custom__radio__buttons').find('.custom__radio__button__item').removeClass('active').removeClass('field__success');
         $(this).parents('.custom__radio__buttons').find('.custom__radio__button__item input').prop('checked', false);
-        $(this).toggleClass('active');
+        $(this).toggleClass('active').toggleClass('field__success');
         $(this).find('input').prop('checked', true);
+        $('#profile__save').removeClass('hide')
         return false
     });
+
+    $('.products__sort__href').click(function () {
+        $(this).toggleClass('rotate')
+    })
 });
 
 $('.registration__form__start').find('.custom__input__field').attr('autocomplete', 'off');
 
+$('.auth__form').find('.custom__input__field').attr('autocomplete', 'off')
+
 $(document).ready(function () {
     let pattern = /^[a-z0-9._-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i
     let password_pattern = /^[a-z0-9_-]$/
-    let input = $('.custom__input__field')
+    let registration_field = $('.custom__input__field')
     let profile_info = $('.profile_info_field')
-    let profile_edit = $('#profile__edit')
     let profile_save = $('#profile__save')
+
+
+    let registration_continue_button1 = $('.button1')
+    let registration_continue_button2 = $('.button2')
 
     profile_info.attr('readOnly', true).addClass('unableToEdit')
 
@@ -42,10 +52,8 @@ $(document).ready(function () {
         $(this).parents('.profile__info__item__grid').find('.custom__input__field').toggleClass('unableToEdit').attr('readOnly', false).focus()
     })
 
-
-    input.on('change keyup', function validateField() {
+    registration_field.on('change keyup', function validateField() {
         profile_save.attr('disabled', false).removeClass('hide')
-
 
         if ($(this).val() !== '') {
             if ($(this).attr('id') === 'email') {
@@ -72,16 +80,20 @@ $(document).ready(function () {
                 }
             }
 
-            else {
+            if ($(this).attr('id') !== 'username' && $(this).attr('id') !== 'email'
+                && $(this).attr('id') !== 'password') {
                 successField($(this))
             }
         }
         else {emptyField($(this))}
+    })
 
-        $(this).parents('.reg__field__grid').find("#form__continue").click(function () {
-            $(this).parents('.reg__from__elem').addClass('active')
-            console.log('ok')
-        })
+    registration_continue_button1.click(function () {
+        $('.reg__password__block').addClass('active')
+    })
+
+    registration_continue_button2.click(function () {
+        $('.reg__username__block').addClass('active')
     })
 
 
@@ -127,4 +139,5 @@ $(document).ready(function () {
             .removeClass('field__success').addClass('field__error');
         field.removeClass('field__success').addClass('field__error');
     }
+
 })

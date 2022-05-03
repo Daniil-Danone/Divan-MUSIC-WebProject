@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, SubmitField
+from wtforms import StringField, EmailField, SubmitField, RadioField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed
 
@@ -13,7 +13,7 @@ class ProfileForm(FlaskForm):
 
     age = StringField('Возраст', name='age', id='age', render_kw={"placeholder": "Возраст"})
 
-    sex = StringField('Пол', name='sex', id='sex', render_kw={"placeholder": "Пол"})
+    sex = RadioField('Пол', choices=[('Мужской', 'Мужской'), ('Женский', 'Женский')], id='sex', name='sex')
 
     hobby = StringField('Хобби', name='hobby', id='hobby', render_kw={"placeholder": "Хобби"})
 

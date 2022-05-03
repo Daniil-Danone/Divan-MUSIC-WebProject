@@ -16,6 +16,7 @@ from static.forms.login_form import LoginForm
 from static.forms.product_form import ProductForm
 from static.forms.start_registration import RegistrationForm
 from static.forms.profile_form import ProfileForm
+from static.forms.search_form import SearchForm
 
 from flask import Flask, render_template, redirect, make_response, jsonify, request, abort
 from flask_login import login_user, login_required, logout_user, current_user
@@ -30,6 +31,8 @@ app.config['SECRET_KEY'] = 'Divan_music'
 
 yandex_disk_token = os.environ.get('YANDEX_DISK_API')
 disk = yadisk.YaDisk(token=yandex_disk_token)
+
+disk_path = None
 
 
 @login_manager.user_loader
@@ -83,10 +86,15 @@ def registration():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
+            email = form.email.data
+            form.email.data = ''
+            form.password.data = ''
+            form.username.data = ''
             return render_template('registration.html',
                                    title='Регистрация',
                                    form=form,
-                                   email_error='Почта занята!')
+                                   email_error=f'Почта -- {email} -- занята! Попробуйте ввести другую.',
+                                   error='field__error')
         else:
             print("Проверка саксес")
             user.email = form.email.data
@@ -95,7 +103,7 @@ def registration():
             user.username = form.username.data
             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
 
-            user.posts = 0
+            user.posts_count = 0
             user.name = ''
             user.surname = ''
             user.sex = ''
@@ -105,50 +113,11 @@ def registration():
             db_sess.add(user)
             db_sess.commit()
             login_user(user)
-        return redirect('/')
+        return redirect('/profile')
 
     return render_template('registration.html',
                            title='Регистрация',
                            form=form)
-
-
-# def registration():
-#     db_sess = db_session.create_session()
-#     form = RegistrationForm()
-#     user = User()
-#     if form.validate_on_submit():
-#         if db_sess.query(User).filter(User.email == form.email.data).first():
-#             return render_template('registration_template.html',
-#                                    title='Регистрация',
-#                                    form=form,
-#                                    message="Пользователь с данной почтой уже зарегистрирован в системе")
-#         else:
-#             user.username = form.username.data
-#             user.email = form.email.data
-#             user.hashed_password = form.password.data
-#             user.set_password(form.password.data)
-#             user.name = form.name.data
-#             user.surname = form.surname.data
-#             user.sex = form.sex.data
-#             user.age = str(form.age.data)
-#             user.hobby = form.hobby.data
-#             user.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
-#             if form.avatar.data != '':
-#                 img = form.avatar.data
-#                 filename = f'{form.email.data}.png'
-#                 img.save(filename)
-#                 image = Image.open(filename)
-#                 out_img = crop_max_square(image)
-#                 out_img.save(f"static/img/avatars/{form.email.data}.png")
-#                 user.avatar_path = f"/img/avatars/{form.email.data}.png"
-#                 os.remove(filename)
-#             db_sess.add(user)
-#             db_sess.commit()
-#             login_user(user)
-#             return redirect('/')
-#     return render_template('registration_template.html',
-#                            title='Регистрация',
-#                            form=form)
 
 
 @app.route('/logout')
@@ -158,14 +127,20 @@ def logout():
     return redirect("/")
 
 
-@app.route('/profile', methods=['POST', 'GET'])
+@app.route('/profile/<int:id>', methods=['POST', 'GET'])
 @login_required
-def profile():
+def profile(id):
     form = ProfileForm()
+    is_active = None
+    active__man = None
+    active__woman = None
+
+    if current_user.id != id:
+        is_active = 'disabled'
 
     if request.method == 'GET':
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        user = db_sess.query(User).filter(User.id == id).first()
 
         if user:
             form.email.data = user.email
@@ -173,6 +148,10 @@ def profile():
             form.surname.data = user.surname
             form.age.data = user.age
             form.sex.data = user.sex
+            if user.sex == 'Мужской':
+                active__man = 'active'
+            else:
+                active__woman = 'active'
             form.hobby.data = user.hobby
         else:
             abort(404)
@@ -189,23 +168,26 @@ def profile():
 
             if form.avatar.data is not None:
                 img = form.avatar.data
-                filename = f'{form.email.data}.png'
+                filename = f'{current_user.email}.png'
                 img.save(filename)
                 image = Image.open(filename)
                 out_img = crop_max_square(image)
-                out_img.save(f"static/img/avatars/{form.email.data}.png")
-                user.avatar_path = f"/img/avatars/{form.email.data}.png"
+                out_img.save(f"static/img/avatars/{current_user.email}.png")
+                user.avatar_path = f"/img/avatars/{current_user.email}.png"
                 try:
                     os.replace(filename, 'static/img/avatars')
                 except:
                     pass
             db_sess.commit()
-            return redirect('/profile')
+            return redirect(f'/profile/{current_user.id}')
         else:
             abort(404)
 
     return render_template('profile.html',
-                           user=current_user,
+                           user=user,
+                           active__man=active__man,
+                           active__woman=active__woman,
+                           is_active=is_active,
                            form=form,
                            title=f'{current_user.username} - DIVAN music',
                            image=f'/img/avatars/{current_user.email}.png')
@@ -221,7 +203,10 @@ def add_post():
     if post_form.validate_on_submit():
         post.title = post_form.title.data
         post.description = post_form.description.data
-        post.theme = post_form.theme.data
+        if post.theme:
+            post.theme = post_form.theme.data
+        else:
+            post.theme = ''
         post.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
         post.is_privacy = post_form.is_privacy.data
         if post_form.content.data != '':
@@ -233,9 +218,8 @@ def add_post():
             except Exception as ex:
                 print(ex)
                 pass
-        post.creator_avatar_path = current_user.avatar_path
-        post.creator = current_user.username
-        db_sess.add(post)
+        current_user.posts.append(post)
+        db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/posts')
 
@@ -288,11 +272,22 @@ def post_delete(post_id):
     return redirect('/posts')
 
 
-@app.route('/marketplace')
+@app.route('/marketplace', methods=['POST', 'GET'])
 def marketplace():
-    db_sess = db_session.create_session()
-    products = db_sess.query(Product).all()
-    products.reverse()
+    form = SearchForm()
+
+    products = None
+
+    if request.method == 'GET':
+        db_sess = db_session.create_session()
+        products = db_sess.query(Product).all()
+        products.reverse()
+
+    if form.is_submitted():
+        print(form.search__field.data)
+        db_sess = db_session.create_session()
+        products = db_sess.query(Product).filter(Product.title.like(f'%{form.search__field.data.lower()}%'))
+
     if current_user.is_authenticated:
         image = current_user.email
         log_form = None
@@ -300,11 +295,13 @@ def marketplace():
     else:
         image = None
         log_form = LoginForm()
+
     return render_template('marketplace_main_page.html',
                            user=current_user,
                            title=f'Маркетплейс - DIVAN music',
                            image=f'/img/avatars/{image}.png',
                            products=products,
+                           search=form,
                            form=log_form)
 
 
@@ -344,13 +341,13 @@ def download_file(product_id):
 
 @login_required
 @app.route('/add_product', methods=['POST', 'GET'])
-def add_product():
+async def add_product():
     product_form = ProductForm()
+    db_sess = db_session.create_session()
     product = Product()
     error = None
 
     if product_form.validate_on_submit():
-        db_sess = db_session.create_session()
         product.title = product_form.title.data
         product.description = product_form.description.data
         product.theme = product_form.theme.data
@@ -388,30 +385,16 @@ def add_product():
                 product.icon_file = '/img/icons/doc.png'
             elif filename.split('.')[-1] == 'gp' or filename.split()[-1] == 'gpx' or filename.split()[-1] == 'gp5':
                 product.icon_file = '/img/icons/gpx.png'
+                product.preview_path = '/img/icons/gp5.png'
             else:
                 product.icon_file = None
 
-            if not disk.exists(f"/Site-products/{current_user.email}"):
-                disk.mkdir(f"/Site-products/{current_user.email}")
-            if not disk.exists(f"/Site-products/{current_user.email}/{filename}"):
-                disk.upload(filepath, f"/Site-products/{current_user.email}/{filename}")
-                product.path = f"/Site-products/{current_user.email}/{filename}"
-                product.content = filename
-            else:
-                while True:
-                    new_filename = filename.replace(filename.split('.')[-1], '').rstrip('.') + \
-                                   str(random.randrange(0, 9999)) + '.' + filename.split('.')[-1]
-                    if not disk.exists(f"/Site-products/{current_user.email}/{new_filename}"):
-                        break
-                disk.upload(filepath, f"/Site-products/{current_user.email}/{new_filename}")
-                product.path = f"/Site-products/{current_user.email}/{new_filename}"
-                product.content = new_filename
-
+            await asyncio.gather(upload_file(filepath, current_user.email, filename))
+            product.content = filename
+            product.path = disk_path
         else:
             error = 'Вы должны добавить продукт (ноты)'
 
-        product.creator = current_user.username
-        product.creator_avatar_path = current_user.avatar_path
         product.is_sold = False
         product.created_date = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
 
@@ -428,10 +411,9 @@ def add_product():
                                    error=error,
                                    form=product_form)
         else:
-            db_sess.add(product)
+            current_user.products.append(product)
             db_sess.merge(current_user)
             db_sess.commit()
-
             return redirect('/marketplace')
 
     return render_template('add_product.html',
@@ -455,6 +437,24 @@ def crop_max_square(pil_img):
 
 def delete_image(path):
     os.remove(path)
+
+
+async def upload_file(path, email, filename):
+    product = Product()
+    if not disk.exists(f"/Site-products/{email}"):
+        disk.mkdir(f"/Site-products/{email}")
+    if not disk.exists(f"/Site-products/{email}/{filename}"):
+        disk.upload(path, f"/Site-products/{email}/{filename}")
+    else:
+        while True:
+            new_filename = filename.replace(filename.split('.')[-1], '').rstrip('.') + \
+                           str(random.randrange(0, 9999)) + '.' + filename.split('.')[-1]
+            if not disk.exists(f"/Site-products/{email}/{new_filename}"):
+                break
+        disk.upload(path, f"/Site-products/{email}/{new_filename}")
+        filename = new_filename
+    global disk_path
+    disk_path = f"/Site-products/{email}/{filename}"
 
 
 if __name__ == '__main__':
