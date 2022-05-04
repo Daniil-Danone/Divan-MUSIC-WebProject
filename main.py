@@ -113,7 +113,7 @@ def registration():
             db_sess.add(user)
             db_sess.commit()
             login_user(user)
-        return redirect('/profile')
+        return redirect(f'/profile/{current_user.id}')
 
     return render_template('registration.html',
                            title='Регистрация',
@@ -179,6 +179,7 @@ def profile(id):
                 except:
                     pass
             db_sess.commit()
+            os.remove(filename)
             return redirect(f'/profile/{current_user.id}')
         else:
             abort(404)
@@ -195,7 +196,7 @@ def profile(id):
 
 @login_required
 @app.route('/add_post', methods=['POST', 'GET'])
-def add_post():
+async def add_post():
     db_sess = db_session.create_session()
     post_form = PostForm()
     post = Post()
@@ -212,9 +213,9 @@ def add_post():
         if post_form.content.data != '':
             try:
                 img = post_form.content.data
-                img.save(f"static/img/post_img/{current_user.username}_{current_user.posts}.png")
-                post.path = f'/img/post_img/{current_user.username}_{current_user.posts}.png'
-                user.posts = user.posts + 1
+                img.save(f"static/img/post_img/{current_user.username}_{current_user.posts_count}.png")
+                post.path = f'/img/post_img/{current_user.username}_{current_user.posts_count}.png'
+                user.posts_count = user.posts_count + 1
             except Exception as ex:
                 print(ex)
                 pass
